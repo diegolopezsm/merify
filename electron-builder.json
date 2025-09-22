@@ -1,0 +1,16 @@
+{
+  "appId": "com.merify.app",
+  "icon": "merify-logo.png",
+  "files": ["dist", "dist-ui"],
+  "extraResources": ["dist/preload.cjs"],
+  "mac": {
+    "target": "dmg"
+  },
+  "win": {
+    "target": ["portable", "msi"]
+  },
+  "linux": {
+    "target": ["AppImage", "deb", "rpm", "snap", "tar.gz"],
+    "category": "Utility"
+  }
+}
