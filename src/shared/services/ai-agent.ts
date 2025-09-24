@@ -9,6 +9,7 @@ export const askAgent = async (
   prompt: string,
   onChunk: (chunk: string) => void
 ) => {
+  console.log("prompt", prompt);
   const response = await genai.models.generateContentStream({
     model: "gemini-2.5-flash-lite",
     contents: prompt,
@@ -26,13 +27,13 @@ export const askAgent = async (
 
 export const slackSummaryPrompt = `Eres un asistente que resume conversaciones de Slack.
 Instrucciones:
-- Lee la lista de mensajes en orden cronológico.
+- Lee la lista de mensajes en orden cronológico por timestamp.
 - Haz un resumen preciso y claro de los puntos importantes.
-- Mantén el orden temporal de los mensajes.
 - Omite saludos, felicitaciones, reacciones, mensajes de “join/leave” o irrelevantes.
 - Destaca solo recordatorios, fechas, tareas, decisiones o información clave.
 - Si hay varios mensajes relacionados, unifícalos en una sola idea.
 
-Formato de salida markdown:
-Un listado en viñetas, cada viñeta = un hecho importante, ordenados cronológicamente.
+Formato de salida:
+Un listado en viñetas, cada viñeta = un hecho importante, ordenados cronológicamente por timestamp, con la siguiente estructura:
+- timestamp(yyyy-mm-dd hh:mm:ss)- [mensaje]
 `;

@@ -2,7 +2,7 @@
   "appId": "com.merify.app",
   "icon": "merify-logo.png",
   "files": ["dist", "dist-ui"],
-  "extraResources": ["dist/preload.cjs"],
+  "extraResources": ["dist/preload.cjs", "src/assets/**"],
   "mac": {
     "target": "dmg"
   },

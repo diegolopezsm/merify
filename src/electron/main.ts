@@ -1,7 +1,8 @@
 import path from "path";
 import { isDev } from "./util.js";
+import { createTray } from "./tray.js";
 import { app, BrowserWindow } from "electron";
-import { resolvePath } from "./path-resolver.js";
+import { resolvePreloadPath } from "./path-resolver.js";
 import { exposeSlackApiMethods } from "./services/slack/expose-slack-api-methods.js";
 // import { Notification } from 'electron'
 
@@ -16,8 +17,9 @@ app.whenReady().then(() => {
   const mainWindow = new BrowserWindow({
     width: 1200,
     height: 1000,
+    title: "Merify",
     webPreferences: {
-      preload: resolvePath(),
+      preload: resolvePreloadPath(),
     },
   });
   if (isDev()) {
@@ -26,6 +28,8 @@ app.whenReady().then(() => {
   } else {
     mainWindow.loadFile(path.join(app.getAppPath(), "/dist-ui/index.html"));
   }
+
+  createTray(mainWindow);
 
   exposeSlackApiMethods();
 });

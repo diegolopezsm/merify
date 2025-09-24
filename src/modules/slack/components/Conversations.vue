@@ -80,3 +80,16 @@ async function onConversationClick(conversation: Conversation) {
     </div>
   </template>
 </template>
+
+<style scoped>
+ul {
+  list-style-type: disc;
+}
+ol {
+  list-style-type: decimal;
+}
+blockquote {
+  border-left: 2px solid #ccc;
+  padding-left: 10px;
+}
+</style>
