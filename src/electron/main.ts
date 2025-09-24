@@ -1,10 +1,8 @@
 import path from "path";
 import { isDev } from "./util.js";
+import { app, BrowserWindow } from "electron";
 import { resolvePath } from "./path-resolver.js";
-import { app, BrowserWindow, ipcMain } from "electron";
-import { slackAuth } from "./services/slack/slack-auth.js";
-import { getChannels } from "./services/slack/get-channels.js";
-import { SLACK_AUTH, SLACK_GET_CHANNELS } from "../shared/contants.js";
+import { exposeSlackApiMethods } from "./services/slack/expose-slack-api-methods.js";
 // import { Notification } from 'electron'
 
 // const NOTIFICATION_TITLE = 'Basic Notification'
@@ -29,6 +27,5 @@ app.whenReady().then(() => {
     mainWindow.loadFile(path.join(app.getAppPath(), "/dist-ui/index.html"));
   }
 
-  ipcMain.on(SLACK_AUTH, slackAuth);
-  ipcMain.handle(SLACK_GET_CHANNELS, getChannels);
+  exposeSlackApiMethods();
 });

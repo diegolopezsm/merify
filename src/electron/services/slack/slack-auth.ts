@@ -5,15 +5,13 @@ const PROTOCOL = "merify-app";
 
 const clientId = "9582091730912.9554595689170";
 const scope = [
-  //   "chat:write",
-  //   "chat:write.public",
-  //   "channels:history",
-  //   "channels:join",
-  //   "read",
-  //   "im:read",
-  //   "mpim:read",
-  //   "groups:read",
+  "im:history",
+  "mpim:history",
   "channels:read",
+  "groups:history",
+  "channels:history",
+  "users:read",
+  "users:read.email",
 ];
 const redirectUri = "https://merify-be.vercel.app/api/v1/slack/callback";
 

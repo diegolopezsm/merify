@@ -1,23 +1,11 @@
 <script setup lang="ts">
-import { SLACK_GET_CHANNELS } from "@/shared/contants";
-import { Card, Button } from "@/shared/components";
-// import { WebClient } from "@slack/web-api";
+import { Button } from "@/shared/components";
+import { SLACK_GET_CONVERSATIONS } from "@/shared/contants";
 
-// Initialize Slack authentication
-function initSlackAuth(): void {
-  console.log("initSlackAuth");
-  window.electron.initSlackAuth();
-}
-
-// Get Slack channels
 async function getChannels(): Promise<void> {
   try {
-    const channels = await window.electron.invoke(SLACK_GET_CHANNELS);
+    const channels = await window.electron.invoke(SLACK_GET_CONVERSATIONS);
     console.log(channels);
-    // const client = new WebClient(token);
-
-    // const result = await client.conversations.list();
-    // console.log(result.channels);
   } catch (error) {
     console.error("Error getting channels:", error);
   }
@@ -25,18 +13,5 @@ async function getChannels(): Promise<void> {
 </script>
 
 <template>
-  <Card class="flex flex-col items-center justify-center">
-    <Button
-      class="flex flex-col items-center justify-center"
-      @click="initSlackAuth"
-    >
-      <img
-        src="@/assets/slack-new-logo.svg"
-        alt="Slack Logo"
-        class="w-10 h-10"
-      />
-      <p>Add your Slack notifications</p>
-    </Button>
-  </Card>
   <Button @click="getChannels()"> test </Button>
 </template>
