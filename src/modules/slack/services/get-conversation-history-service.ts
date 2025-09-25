@@ -18,7 +18,7 @@ export const getConversationHistoryService = async (args: ConversationsHistoryAr
     messages: response.messages?.map((message) => ({
       user: message.user || "",
       text: message.text || "",
-      timestamp: new Date(Number(message.ts) * 1000).toString() || "",
+      timestamp: new Date(Number(message.ts) * 1000).toLocaleString() || "",
       type: message.type || "",
     })) || [],
   };

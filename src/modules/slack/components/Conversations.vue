@@ -48,9 +48,9 @@ async function addUserNameToMessages(messages: Message[]) {
 async function onConversationClick(conversation: Conversation) {
   await getConversationHistory(conversation);
   const initPrompt = slackSummaryPrompt;
-  const chat = JSON.stringify(selectedConversationMessages.value);
-
-  askAgent(`${initPrompt}:\n\n${chat}`, (chunk) => {
+  const chat = selectedConversationMessages.value.map((message) => (`${message.timestamp} - ${message.text}`)).join("\n\n");
+  const prompt = `${initPrompt}:\n\n${chat}`;
+  askAgent(prompt, (chunk) => {
     chatSummary.value += chunk;
   });
 }
