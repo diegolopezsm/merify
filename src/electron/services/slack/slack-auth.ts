@@ -3,7 +3,7 @@ import { app, BrowserWindow, protocol } from "electron";
 
 const PROTOCOL = "merify-app";
 
-const clientId = "9582091730912.9554595689170";
+const clientId = "";
 const scope = [
   "im:history",
   "mpim:history",
