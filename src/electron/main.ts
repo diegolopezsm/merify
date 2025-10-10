@@ -1,23 +1,47 @@
 import path from "path";
-import { isDev } from "./util.js";
-import { createTray } from "./tray.js";
-import { app, BrowserWindow } from "electron";
+import { animateWindowTransition, isDev } from "./util.js";
+import { app, BrowserWindow, ipcMain, screen } from "electron";
 import { resolvePreloadPath } from "./path-resolver.js";
 import { exposeSlackApiMethods } from "./services/slack/expose-slack-api-methods.js";
-// import { Notification } from 'electron'
+import dotenv from "dotenv";
 
-// const NOTIFICATION_TITLE = 'Basic Notification'
-// const NOTIFICATION_BODY = 'Notification from the Main process'
-
-// function showNotification () {
-//   new Notification({ title: NOTIFICATION_TITLE, body: NOTIFICATION_BODY }).show()
-// }
+// Cargar variables de entorno
+dotenv.config();
 
 app.whenReady().then(() => {
+  app.dock?.hide();
+  createWidgetWindow();
+  // const mainWindow = createTray(widgetWindow);
+
+  exposeSlackApiMethods();
+});
+
+function createWidgetWindow() {
+  const { width: screenWidth, height: screenHeight } =
+    screen.getPrimaryDisplay().bounds;
+
+  const initialWidgetWidth = 1300;
+  const initialWidgetHeight = 30;
+  const activeWidgetHeight = screenHeight / 2 + 300;
+  const paddingRight = 10;
+  const paddingBottom = -1;
+  const activeOpacity = 1;
+  const opacity = 0.2;
+
   const mainWindow = new BrowserWindow({
-    width: 1200,
-    height: 1000,
+    width: initialWidgetWidth,
+    height: initialWidgetHeight,
+    frame: false,
+    alwaysOnTop: true,
+    transparent: true,
     title: "Merify",
+    enableLargerThanScreen: true,
+    opacity: opacity,
+    // movable: false,
+    // resizable: false,
+    y: screenHeight - initialWidgetHeight - paddingBottom,
+    x: screenWidth - initialWidgetWidth - paddingRight,
+    // kiosk: true,
     webPreferences: {
       preload: resolvePreloadPath(),
     },
@@ -29,7 +53,28 @@ app.whenReady().then(() => {
     mainWindow.loadFile(path.join(app.getAppPath(), "/dist-ui/index.html"));
   }
 
-  createTray(mainWindow);
+  mainWindow.on("focus", () => {
+    animateWindowTransition(
+      mainWindow,
+      { width: initialWidgetWidth, height: activeWidgetHeight },
+      {
+        x: screenWidth - initialWidgetWidth - paddingRight,
+        y: screenHeight - activeWidgetHeight - paddingBottom,
+      },
+      activeOpacity
+    );
+  });
+  // mainWindow.on("blur", () => {
+  //   animateWindowTransition(
+  //     mainWindow,
+  //     { width: initialWidgetWidth, height: initialWidgetHeight },
+  //     {
+  //       x: screenWidth - initialWidgetWidth - paddingRight,
+  //       y: screenHeight - initialWidgetHeight - paddingBottom,
+  //     },
+  //     opacity
+  //   );
+  // });
 
-  exposeSlackApiMethods();
-});
+  return mainWindow;
+}

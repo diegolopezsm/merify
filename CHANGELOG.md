@@ -1,5 +1,13 @@
 # Merify
 
+## 0.5.0
+
+### Minor Changes
+
+- Add Electron configuration to make app windown peristent and always top on screen
+- Screen can auto resize when focus to show content
+- Screen can hide when blur
+
 ## 0.4.0
 
 ### Minor Changes
