@@ -1,0 +1,7 @@
+{
+  "watch": ["src/electron"],
+  "ext": "ts,js",
+  "ignore": ["src/electron/**/*.test.ts", "src/electron/**/*.spec.ts"],
+  "exec": "npm run transpile:electron && cross-env NODE_ENV=development electron .",
+  "delay": 1000
+}

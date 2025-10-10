@@ -1,5 +1,11 @@
 # Merify
 
+## 0.3.0
+
+### Minor Changes
+
+- Configure envs & auto reload when electron files change
+
 ## 0.2.0
 
 ### Minor Changes

@@ -3,7 +3,7 @@ import { app, BrowserWindow, protocol } from "electron";
 
 const PROTOCOL = "merify-app";
 
-const clientId = "";
+const clientId = process.env.SLACK_CLIENT_ID || "";
 const scope = [
   "im:history",
   "mpim:history",
@@ -13,7 +13,7 @@ const scope = [
   "users:read",
   "users:read.email",
 ];
-const redirectUri = "https://merify-be.vercel.app/api/v1/slack/callback";
+const redirectUri = process.env.SLACK_REDIRECT_URI || "";
 
 export const slackAuth = () => {
   console.log("slackAuth");
