@@ -19,13 +19,13 @@ const checkAuth = async () => {
 </script>
 
 <template>
-  <div class="col-span-12 bg-white/80 rounded-lg shadow px-4 py-2 min-h-70">
+  <div class="col-span-12 bg-white/80 rounded-lg shadow px-4 py-2">
     <div v-if="loading">Loading...</div>
     <div v-else>
       <div v-if="hasAuth">
         <Conversations />
       </div>
-      <InitSlack />
+      <InitSlack v-else />
     </div>
   </div>
 </template>

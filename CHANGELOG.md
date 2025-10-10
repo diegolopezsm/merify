@@ -1,5 +1,11 @@
 # Merify
 
+## 0.4.0
+
+### Minor Changes
+
+- Add Tabs main view mocks
+
 ## 0.3.0
 
 ### Minor Changes
