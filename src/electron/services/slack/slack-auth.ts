@@ -1,5 +1,5 @@
-import { saveToken } from "./token.js";
 import { app, BrowserWindow, protocol } from "electron";
+import { setInStore, SLACK_TOKEN } from "../db/store.js";
 
 const PROTOCOL = "merify-app";
 
@@ -42,8 +42,8 @@ protocol.registerSchemesAsPrivileged([
 app.on("open-url", (event, url) => {
   event.preventDefault();
   const params = new URL(url).searchParams;
-  const token = params.get("access_token");
-  if (token) {
-    saveToken(token);
+  const slackAccessToken = params.get("slack_access_token");
+  if (slackAccessToken) {
+    setInStore(SLACK_TOKEN, slackAccessToken);
   }
 });

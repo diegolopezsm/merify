@@ -1,20 +1,33 @@
 import Store from "electron-store";
+import fs from "fs";
+import os from "os";
+import path from "path";
+import { randomBytes } from "crypto";
 
-export const store = new Store();
+const keyPath = path.join(os.homedir(), ".merify-key");
+function getOrCreateSecretKey() {
+  if (fs.existsSync(keyPath)) {
+    return fs.readFileSync(keyPath, "utf8");
+  } else {
+    const newKey = randomBytes(32).toString("hex");
+    fs.writeFileSync(keyPath, newKey, { mode: 0o600 });
+    return newKey;
+  }
+}
 
-export const getStore = () => {
-  return store;
-};
+const STORE_SECRET_KEY = getOrCreateSecretKey();
 
-export const setStore = (key: string, value: any) => {
-  store.set(key, value);
-};
+const store = new Store({
+  name: "merify-store",
+  encryptionKey: STORE_SECRET_KEY,
+});
 
-export const getStoreValue = (key: string) => {
-  const value = store.get(key) || "";
-  return value;
-};
+export const getStore = () => store;
 
-export const deleteStore = (key: string) => {
-  store.delete(key);
-};
+export const setInStore = (key: string, value: any) => store.set(key, value);
+
+export const getFromStore = (key: string) => store.get(key, undefined);
+
+export const deleteFromStore = (key: string) => store.delete(key);
+
+export const SLACK_TOKEN = "slackToken";

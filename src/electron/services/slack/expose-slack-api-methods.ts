@@ -1,18 +1,18 @@
 import { ipcMain } from "electron";
-import { getToken } from "./token.js";
+import { getFromStore, SLACK_TOKEN } from "../db/store.js";
 import { WebClient } from "@slack/web-api";
 import { slackAuth } from "./slack-auth.js";
 import {
+  GET_USER,
   SLACK_GET_AUTH,
   SLACK_INIT_AUTH,
   SLACK_GET_CONVERSATIONS,
   SLACK_GET_CONVERSATION_HISTORY,
-  GET_USER,
-} from "../../../shared/contants.js";
+} from "../../../shared/constants/electron-api-events.js";
 
 
 export const exposeSlackApiMethods = () => {
-  const client = new WebClient(getToken() as string);
+  const client = new WebClient(getFromStore(SLACK_TOKEN) as string);
 
   ipcMain.on(SLACK_INIT_AUTH, slackAuth);
   
