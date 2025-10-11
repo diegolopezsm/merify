@@ -1,5 +1,11 @@
 # Merify
 
+## 0.8.0
+
+### Minor Changes
+
+- Add .env build config
+
 ## 0.7.0
 
 ### Minor Changes

@@ -1,5 +1,9 @@
 import { app, BrowserWindow, protocol } from "electron";
-import { setInStore, SLACK_TOKEN } from "../db/store.js";
+import { initEnv } from "../../util.js";
+import { setInStore } from "../db/store.js";
+import { SLACK_TOKEN } from "../../../shared/constants/store-keys.js";
+
+initEnv();
 
 const PROTOCOL = "merify-app";
 

@@ -1,7 +1,18 @@
 import { BrowserWindow } from "electron";
+import dotenv from "dotenv";
+import path from "path";
 
 export const isDev = (): boolean => {
   return process.env.NODE_ENV === "development";
+};
+
+export const initEnv = () => {
+  if (isDev()) {
+    dotenv.config();
+  } else {
+    const envPath = path.join(process.resourcesPath, ".env.production");
+    dotenv.config({ path: envPath });
+  }
 };
 
 const TRANSITION_DURATION = 300; // milliseconds

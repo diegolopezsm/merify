@@ -12,6 +12,7 @@ dist
 dist-ui
 *.local
 .env
+.env.production
 
 # Editor directories and files
 .vscode

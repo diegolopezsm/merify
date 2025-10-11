@@ -1,6 +1,5 @@
 interface Window {
   electron: {
-    initSlackAuth: () => void;
     invoke: (channel: string, ...args: any[]) => Promise<any>;
   };
 }
@@ -8,7 +7,6 @@ interface Window {
 declare global {
   interface Window {
     electron: {
-      initSlackAuth: () => void;
       invoke: (channel: string, ...args: any[]) => Promise<any>;
     };
   }

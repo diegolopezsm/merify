@@ -1,12 +1,11 @@
 import path from "path";
-import dotenv from "dotenv";
 import { app, BrowserWindow, screen } from "electron";
 import { resolvePreloadPath } from "./path-resolver.js";
-import { animateWindowTransition, isDev } from "./util.js";
 import { exposeStore } from "./services/db/expose-store.js";
+import { animateWindowTransition, initEnv, isDev } from "./util.js";
 import { exposeSlackApiMethods } from "./services/slack/expose-slack-api-methods.js";
 
-dotenv.config();
+initEnv();
 
 app.whenReady().then(() => {
   // app.dock?.hide();
