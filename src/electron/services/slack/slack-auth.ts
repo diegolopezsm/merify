@@ -16,7 +16,6 @@ const scope = [
 const redirectUri = process.env.SLACK_REDIRECT_URI || "";
 
 export const slackAuth = () => {
-  console.log("slackAuth");
   const mainWindow = new BrowserWindow({
     width: 1200,
     height: 1000,

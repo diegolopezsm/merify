@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Card, Button } from "@/shared/components";
-import SlackLogo from "./SlackLogo.vue";
+import SlackLogo from "@/shared/components/icons/SlackLogo.vue";
 
 function initSlackAuth(): void {
   window.electron.initSlackAuth();

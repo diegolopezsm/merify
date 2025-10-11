@@ -37,7 +37,7 @@ const setActiveView = (view: ActiveView) => {
 <template>
   <div class="pb-2 py-7 px-2">
     <div class="px-4 bg-white shadow rounded-md py-4">
-      <div class="flex gap-4 border-b-2">
+      <div class="flex gap-4 border-b-2 mb-4">
         <Button
           v-for="tab in tabs"
           class="rounded-b-none flex items-center"

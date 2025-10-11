@@ -5,14 +5,11 @@ import { resolvePreloadPath } from "./path-resolver.js";
 import { exposeSlackApiMethods } from "./services/slack/expose-slack-api-methods.js";
 import dotenv from "dotenv";
 
-// Cargar variables de entorno
 dotenv.config();
 
 app.whenReady().then(() => {
-  app.dock?.hide();
+  // app.dock?.hide();
   createWidgetWindow();
-  // const mainWindow = createTray(widgetWindow);
-
   exposeSlackApiMethods();
 });
 
@@ -20,11 +17,11 @@ function createWidgetWindow() {
   const { width: screenWidth, height: screenHeight } =
     screen.getPrimaryDisplay().bounds;
 
-  const initialWidgetWidth = 1300;
+  const initialWidgetWidth = 400;
   const initialWidgetHeight = 30;
   const activeWidgetHeight = screenHeight / 2 + 300;
   const paddingRight = 10;
-  const paddingBottom = -1;
+  const paddingBottom = 0;
   const activeOpacity = 1;
   const opacity = 0.2;
 
@@ -32,7 +29,7 @@ function createWidgetWindow() {
     width: initialWidgetWidth,
     height: initialWidgetHeight,
     frame: false,
-    alwaysOnTop: true,
+    // alwaysOnTop: true,
     transparent: true,
     title: "Merify",
     enableLargerThanScreen: true,
@@ -48,7 +45,7 @@ function createWidgetWindow() {
   });
   if (isDev()) {
     mainWindow.loadURL("http://localhost:5173");
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
   } else {
     mainWindow.loadFile(path.join(app.getAppPath(), "/dist-ui/index.html"));
   }
