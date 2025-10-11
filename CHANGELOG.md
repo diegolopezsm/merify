@@ -1,5 +1,11 @@
 # Merify
 
+## 0.9.0
+
+### Minor Changes
+
+- Refactor slack api use
+
 ## 0.8.0
 
 ### Minor Changes

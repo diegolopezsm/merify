@@ -1,4 +1,4 @@
-import { SLACK_GET_CONVERSATIONS } from "@/shared/contants";
+import { el_api_getSlackConversations } from "@/shared/services/electron-api";
 import type { Conversation } from "@/modules/slack/domain/coversation";
 
 type Response = {
@@ -6,11 +6,14 @@ type Response = {
   channels: Conversation[];
 };
 
-const getConversationsApi = async (): Promise<Response> => {
-  return await window.electron.invoke(SLACK_GET_CONVERSATIONS);
-};
 
-export const getConversationsService = async (): Promise<Conversation[] | null> => {
-  const response = await getConversationsApi();
-  return response.channels;
+export const getSlackConversations = async (): Promise<Response> => {
+  const response = await el_api_getSlackConversations();
+  return {
+    ok: response.ok || false,
+    channels: response.channels?.map((channel) => ({
+      id: channel.id || "",
+      name: channel.name || "",
+    })) || [],
+  };
 };

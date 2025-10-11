@@ -2,7 +2,7 @@
 import { onMounted, ref } from "vue";
 import InitSlack from "@/modules/slack/components/InitSlack.vue";
 import Conversations from "@/modules/slack/components/Conversations.vue";
-import { getAuthService } from "@/modules/slack/services/get-auth-service";
+import { getSlackAuth } from "@/modules/slack/services/get-slack-auth";
 
 const loading = ref(true);
 const hasAuth = ref(false);
@@ -12,7 +12,7 @@ onMounted(() => {
 });
 
 const checkAuth = async () => {
-  const auth = await getAuthService();
+  const auth = await getSlackAuth();
   hasAuth.value = !!auth;
   loading.value = false;
 };

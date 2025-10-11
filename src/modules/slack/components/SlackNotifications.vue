@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { Button } from "@/shared/components";
-import { SLACK_GET_CONVERSATIONS } from "@/shared/contants";
+import { el_api_getSlackConversations } from "@/shared/services/electron-api";
 
 async function getChannels(): Promise<void> {
   try {
-    const channels = await window.electron.invoke(SLACK_GET_CONVERSATIONS);
+    const channels = await el_api_getSlackConversations();
     console.log(channels);
   } catch (error) {
     console.error("Error getting channels:", error);
