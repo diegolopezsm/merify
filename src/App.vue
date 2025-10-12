@@ -4,6 +4,7 @@ import { Button } from "@/shared/components";
 import BellIcon from "@/shared/components/icons/BellIcon.vue";
 import PlugIcon from "@/shared/components/icons/PlugIcon.vue";
 import IntegrationsView from "@/modules/integrations-view/IntegrationsView.vue";
+import NotificationsView from "@/modules/notifications-view/NotificationsView.vue";
 
 enum ActiveView {
   Notifications = "notifications",
@@ -11,23 +12,21 @@ enum ActiveView {
 }
 const tabs = [
   {
-    label: "Notifications",
-    value: ActiveView.Notifications,
+    label: ActiveView.Notifications,
     icon: BellIcon,
   },
   {
-    label: "Integrations",
-    value: ActiveView.Integrations,
+    label: ActiveView.Integrations,
     icon: PlugIcon,
   },
 ];
 
 const views = {
-  notifications: IntegrationsView,
+  notifications: NotificationsView,
   integrations: IntegrationsView,
 };
 
-const activeView = ref<ActiveView>(ActiveView.Notifications);
+const activeView = ref<ActiveView>(ActiveView.Integrations);
 
 const setActiveView = (view: ActiveView) => {
   activeView.value = view;
@@ -40,13 +39,14 @@ const setActiveView = (view: ActiveView) => {
       <div class="flex gap-4 border-b-2 mb-4">
         <Button
           v-for="tab in tabs"
-          class="rounded-b-none flex items-center"
-          :key="tab.value"
-          :variant="activeView === tab.value ? 'primary' : 'ghost'"
-          @click="setActiveView(tab.value)"
+          class="rounded-b-none flex items-center gap-2"
+          :key="tab.label"
+          :variant="activeView === tab.label ? 'primary' : 'ghost'"
+          @click="setActiveView(tab.label)"
         >
-          <component :is="tab.icon" /> {{ tab.label }}</Button
-        >
+          <component :is="tab.icon" />
+          <span class="first-letter:uppercase">{{ tab.label }}</span>
+        </Button>
       </div>
       <KeepAlive>
         <Component :is="views[activeView]" />

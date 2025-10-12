@@ -1,11 +1,19 @@
 import path from "path";
-import { app, BrowserWindow, screen } from "electron";
 import { resolvePreloadPath } from "./path-resolver.js";
 import { exposeStore } from "./services/db/expose-store.js";
+import { app, BrowserWindow, protocol, screen } from "electron";
 import { animateWindowTransition, initEnv, isDev } from "./util.js";
 import { exposeSlackApiMethods } from "./services/slack/expose-slack-api-methods.js";
 
 initEnv();
+
+const PROTOCOL = "merify-app";
+
+app.setAsDefaultProtocolClient(PROTOCOL);
+
+protocol.registerSchemesAsPrivileged([
+  { scheme: PROTOCOL, privileges: { standard: true, secure: true } },
+]);
 
 app.whenReady().then(() => {
   // app.dock?.hide();

@@ -9,7 +9,7 @@
     stroke-width="2"
     stroke-linecap="round"
     stroke-linejoin="round"
-    class="w-4 h-4 mr-2"
+    class="w-4 h-4"
   >
     <path d="M12 22v-5"></path>
     <path d="M9 8V2"></path>

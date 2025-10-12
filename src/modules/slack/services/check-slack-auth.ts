@@ -9,7 +9,7 @@ type Auth = {
   ok: boolean;
 };
 
-export const getSlackAuth = async (): Promise<Auth> => {
+export const checkSlackAuth = async (): Promise<Auth> => {
   const slackToken = await el_api_getFromStore(SLACK_TOKEN);
   if (!slackToken) {
     return {
@@ -18,9 +18,8 @@ export const getSlackAuth = async (): Promise<Auth> => {
     };
   }
   const auth = await el_api_getSlackAuth();
-  console.log(auth);
   return {
-    slackToken: slackToken || undefined,
+    slackToken,
     ok: auth.ok,
   };
 };

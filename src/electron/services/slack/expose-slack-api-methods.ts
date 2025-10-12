@@ -1,7 +1,7 @@
 import { ipcMain } from "electron";
 import { WebClient } from "@slack/web-api";
-import { slackAuth } from "./slack-auth.js";
 import { getFromStore } from "../db/store.js";
+import { handleSlackAuth } from "./slack-auth.js";
 import { SLACK_TOKEN } from "../../../shared/constants/store-keys.js";
 import {
   GET_USER,
@@ -14,7 +14,7 @@ import {
 export const exposeSlackApiMethods = () => {
   const client = new WebClient(getFromStore(SLACK_TOKEN) as string);
 
-  ipcMain.handle(SLACK_INIT_AUTH, () => slackAuth());
+  ipcMain.handle(SLACK_INIT_AUTH, () => handleSlackAuth());
 
   ipcMain.handle(SLACK_GET_AUTH, (_, args) => client.auth.test(args));
 

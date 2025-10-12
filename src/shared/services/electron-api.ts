@@ -1,20 +1,20 @@
 import {
+  GET_USER,
   SET_IN_STORE,
   GET_FROM_STORE,
+  SLACK_GET_AUTH,
+  SLACK_INIT_AUTH,
   DELETE_FROM_STORE,
   SLACK_GET_CONVERSATIONS,
   SLACK_GET_CONVERSATION_HISTORY,
-  SLACK_GET_AUTH,
-  GET_USER,
-  SLACK_INIT_AUTH,
 } from "@/shared/constants/electron-api-events";
 import type {
-  ConversationsHistoryArguments,
-  ConversationsHistoryResponse,
-  ConversationsListResponse,
-  UsersInfoArguments,
-  UsersInfoResponse,
   AuthTestResponse,
+  UsersInfoResponse,
+  UsersInfoArguments,
+  ConversationsListResponse,
+  ConversationsHistoryResponse,
+  ConversationsHistoryArguments,
 } from "@slack/web-api";
 
 // Store
@@ -31,7 +31,7 @@ export const el_api_deleteFromStore = (key: string) => {
 };
 
 // Slack
-export const el_api_initSlackAuth = () => {
+export const el_api_initSlackAuth = (): Promise<{ success: boolean }> => {
   return window.electron.invoke(SLACK_INIT_AUTH);
 };
 
