@@ -1,5 +1,11 @@
 # Merify
 
+## 0.11.1
+
+### Patch Changes
+
+- Remove hardcoded api key
+
 ## 0.11.0
 
 ### Minor Changes
