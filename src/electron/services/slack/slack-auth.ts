@@ -57,7 +57,7 @@ function handleSlackAuthRedirect(
   slackAuthWindow.on("closed", () => {
     resolve({ success: hasToken });
   });
-  slackAuthWindow.webContents.on("did-fail-load", (event, errorCode, errorDescription) => {
-    reject(new Error(`Failed to load: ${errorDescription}`));
-  });
+  // slackAuthWindow.webContents.on("did-fail-load", (event, errorCode, errorDescription) => {
+  //   reject(new Error(`Failed to load: ${errorDescription}`));
+  // });
 }

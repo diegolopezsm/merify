@@ -11,7 +11,6 @@ export const usersStore = () => {
   const addUser = (user: User) => {
     users[user.id] = user;
   };
-
   const getUser = (id: string) => {
     return users[id];
   };

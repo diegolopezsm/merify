@@ -1,70 +1,74 @@
-import { ref, type Ref } from 'vue';
-import { safeRequest } from '@/shared/utils/safe-request';
+import { useAsyncState } from "@vueuse/core";
 
-export interface UseAsyncStateOptions<T> {
-  immediate?: boolean;
-  initialData?: T;
-}
+export { useAsyncState };
 
-export interface UseAsyncStateReturn<T> {
-  data: Ref<T | undefined>;
-  loading: Ref<boolean>;
-  error: Ref<Error | null>;
-  execute: (...args: any[]) => Promise<T | undefined>;
-  reset: () => void;
-}
+// import { ref, type Ref } from 'vue';
+// import { safeRequest } from '@/shared/utils/safe-request';
 
-/**
- * A composable for handling async operations with loading, data, and error states
- * @param asyncFn - The async function to execute
- * @param options - Configuration options
- * @returns Object containing reactive state and control methods
- */
-export function useAsyncState<T>(
-  asyncFn: (...args: any[]) => Promise<T>,
-  options: UseAsyncStateOptions<T> = {}
-): UseAsyncStateReturn<T> {
-  const { immediate = true, initialData } = options;
-  
-  const data = ref(initialData) as Ref<T | undefined>;
-  const loading = ref(false);
-  const error = ref<Error | null>(null);
+// export interface UseAsyncStateOptions<T> {
+//   immediate?: boolean;
+//   initialData?: T;
+// }
 
-  const execute = async (...args: any[]): Promise<T | undefined> => {
-    loading.value = true;
-    error.value = null;
+// export interface UseAsyncStateReturn<T> {
+//   data: Ref<T | undefined>;
+//   loading: Ref<boolean>;
+//   error: Ref<Error | null>;
+//   execute: (...args: any[]) => Promise<T | undefined>;
+//   reset: () => void;
+// }
 
-    const [result, errorResult] = await safeRequest(async () => {
-      return await asyncFn(...args);
-    });
+// /**
+//  * A composable for handling async operations with loading, data, and error states
+//  * @param asyncFn - The async function to execute
+//  * @param options - Configuration options
+//  * @returns Object containing reactive state and control methods
+//  */
+// export function useAsyncState<T>(
+//   asyncFn: (...args: any[]) => Promise<T>,
+//   options: UseAsyncStateOptions<T> = {}
+// ): UseAsyncStateReturn<T> {
+//   const { immediate = true, initialData } = options;
 
-    if (errorResult) {
-      error.value = errorResult;
-      loading.value = false;
-      return undefined;
-    }
+//   const data = ref(initialData) as Ref<T | undefined>;
+//   const loading = ref(false);
+//   const error = ref<Error | null>(null);
 
-    data.value = result;
-    loading.value = false;
-    return result;
-  };
+//   const execute = async (...args: any[]): Promise<T | undefined> => {
+//     loading.value = true;
+//     error.value = null;
 
-  const reset = () => {
-    data.value = initialData;
-    loading.value = false;
-    error.value = null;
-  };
+//     const [result, errorResult] = await safeRequest(async () => {
+//       return await asyncFn(...args);
+//     });
 
-  // Execute immediately if requested
-  if (immediate) {
-    execute();
-  }
+//     if (errorResult) {
+//       error.value = errorResult;
+//       loading.value = false;
+//       return undefined;
+//     }
 
-  return {
-    data,
-    loading,
-    error,
-    execute,
-    reset,
-  };
-}
+//     data.value = result;
+//     loading.value = false;
+//     return result;
+//   };
+
+//   const reset = () => {
+//     data.value = initialData;
+//     loading.value = false;
+//     error.value = null;
+//   };
+
+//   // Execute immediately if requested
+//   if (immediate) {
+//     execute();
+//   }
+
+//   return {
+//     data,
+//     loading,
+//     error,
+//     execute,
+//     reset,
+//   };
+// }

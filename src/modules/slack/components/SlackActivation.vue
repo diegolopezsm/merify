@@ -1,29 +1,33 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { watch } from "vue";
 import { Card, Toggle } from "@/shared/components";
+import { useStorage } from "@/shared/composables/use-storage";
 import SlackLogo from "@/shared/components/icons/SlackLogo.vue";
+import { SLACK_PLUGIN_ON } from "@/modules/slack/domain/constants";
 import { useAsyncState } from "@/shared/composables/use-async-state";
 import { initSlackAuth } from "@/modules/slack/services/init-slack-auth";
 import { checkSlackAuth } from "@/modules/slack/services/check-slack-auth";
 
-const {
-  data: slackAuth,
-  loading,
-  error,
-} = useAsyncState(() => checkSlackAuth());
+const isSlackEnable = useStorage(SLACK_PLUGIN_ON, false);
 
-const isEnabled = ref(false);
-
-watch(slackAuth, (newVal) => {
-  isEnabled.value = newVal?.ok ?? false;
+const { state: slackAuth } = useAsyncState(() => checkSlackAuth(), {
+  ok: false,
+  slackToken: undefined,
 });
 
-watch(isEnabled, async (newVal) => {
+watch(slackAuth, async () => {
+  const auth = await checkSlackAuth();
+  if (!auth.slackToken) {
+    isSlackEnable.value = false;
+  }
+});
+
+watch(isSlackEnable, async (newVal) => {
   if (newVal === true) {
     const auth = await checkSlackAuth();
     if (!auth.slackToken) {
       const auth = await initSlackAuth();
-      isEnabled.value = auth.success;
+      isSlackEnable.value = auth.success;
     }
   }
 });
@@ -39,7 +43,7 @@ watch(isEnabled, async (newVal) => {
           Do not miss slack important messages
         </p>
       </div>
-      <Toggle v-model="isEnabled" />
+      <Toggle v-model="isSlackEnable" />
     </div>
   </Card>
 </template>

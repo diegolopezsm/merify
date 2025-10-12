@@ -1,5 +1,11 @@
 # Merify
 
+## 0.11.0
+
+### Minor Changes
+
+- Add slack enable/disable integration
+
 ## 0.10.0
 
 ### Minor Changes
