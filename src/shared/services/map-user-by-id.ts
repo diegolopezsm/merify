@@ -1,4 +1,4 @@
-import { getUserService } from "@/modules/slack/services/get-user-service";
+import { getSlackUser } from "@/modules/slack/services/get-user-service";
 import { safeRequest } from "../utils/safe-request";
 import { usersStore } from "../store/users";
 
@@ -10,7 +10,7 @@ export async function mapUserById(id: string) {
     return savedUser;
   }
   const [userResponse, error] = await safeRequest(async () => {
-    return await getUserService({ user: id });
+    return await getSlackUser({ user: id });
   });
   if (error || !userResponse?.id) {
     console.error(error);

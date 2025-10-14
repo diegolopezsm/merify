@@ -1,5 +1,5 @@
-import { el_api_initSlackAuth } from "@/shared/services/electron-api";
+import { SLACK_INIT_AUTH } from "@/shared/constants/electron-api-events";
 
 export const initSlackAuth = async (): Promise<{ success: boolean }> => {
-  return await el_api_initSlackAuth();
+  return await window.electron.invoke(SLACK_INIT_AUTH);
 };

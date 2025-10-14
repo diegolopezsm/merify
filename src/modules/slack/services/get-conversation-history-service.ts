@@ -1,5 +1,5 @@
 import type { Message } from "@/modules/slack/domain/message";
-import { el_api_getSlackConversationHistory } from "@/shared/services/electron-api";
+import { SLACK_GET_CONVERSATION_HISTORY } from "@/shared/constants/electron-api-events";
 import type {
   ConversationsHistoryArguments,
   ConversationsHistoryResponse,
@@ -8,7 +8,7 @@ import type {
 const getConversationHistoryApi = async (
   args: ConversationsHistoryArguments
 ): Promise<ConversationsHistoryResponse> => {
-  return await el_api_getSlackConversationHistory(args);
+  return window.electron.invoke(SLACK_GET_CONVERSATION_HISTORY, args);
 };
 
 type Response = {

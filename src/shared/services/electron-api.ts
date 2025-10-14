@@ -1,24 +1,10 @@
 import {
-  GET_USER,
   SET_IN_STORE,
   GET_FROM_STORE,
-  SLACK_GET_AUTH,
-  SLACK_INIT_AUTH,
   DELETE_FROM_STORE,
   SLACK_GET_CONVERSATIONS,
-  SLACK_GET_CONVERSATION_HISTORY,
-  GOOGLE_INIT_AUTH,
-  GOOGLE_GET_AUTH,
 } from "@/shared/constants/electron-api-events";
-import type {
-  AuthTestResponse,
-  UsersInfoResponse,
-  UsersInfoArguments,
-  ConversationsListResponse,
-  ConversationsHistoryResponse,
-  ConversationsHistoryArguments,
-} from "@slack/web-api";
-import type { oauth2_v2 } from "googleapis";
+import type { ConversationsListResponse } from "@slack/web-api";
 
 // Store
 export const el_api_getFromStore = (
@@ -36,36 +22,7 @@ export const el_api_deleteFromStore = (key: string) => {
 };
 
 // Slack
-export const el_api_initSlackAuth = (): Promise<{ success: boolean }> => {
-  return window.electron.invoke(SLACK_INIT_AUTH);
-};
-
 export const el_api_getSlackConversations =
   (): Promise<ConversationsListResponse> => {
     return window.electron.invoke(SLACK_GET_CONVERSATIONS);
   };
-
-export const el_api_getSlackConversationHistory = (
-  args: ConversationsHistoryArguments
-): Promise<ConversationsHistoryResponse> => {
-  return window.electron.invoke(SLACK_GET_CONVERSATION_HISTORY, args);
-};
-
-export const el_api_getSlackAuth = (): Promise<AuthTestResponse> => {
-  return window.electron.invoke(SLACK_GET_AUTH);
-};
-
-export const el_api_getSlackUser = (
-  args: UsersInfoArguments
-): Promise<UsersInfoResponse> => {
-  return window.electron.invoke(GET_USER, args);
-};
-
-// Google
-export const el_api_initGoogleAuth = (): Promise<{ success: boolean }> => {
-  return window.electron.invoke(GOOGLE_INIT_AUTH);
-};
-
-export const el_api_getGoogleAuth = (): Promise<oauth2_v2.Schema$Userinfo> => {
-  return window.electron.invoke(GOOGLE_GET_AUTH);
-};

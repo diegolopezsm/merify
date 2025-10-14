@@ -1,5 +1,5 @@
-import { el_api_initGoogleAuth } from "@/shared/services/electron-api";
+import { GOOGLE_INIT_AUTH } from "@/shared/constants/electron-api-events";
 
 export const initGoogleAuth = async (): Promise<{ success: boolean }> => {
-  return await el_api_initGoogleAuth();
+  return await window.electron.invoke(GOOGLE_INIT_AUTH);
 };
