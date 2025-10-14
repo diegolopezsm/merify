@@ -7,6 +7,8 @@ import {
   DELETE_FROM_STORE,
   SLACK_GET_CONVERSATIONS,
   SLACK_GET_CONVERSATION_HISTORY,
+  GOOGLE_INIT_AUTH,
+  GOOGLE_GET_AUTH,
 } from "@/shared/constants/electron-api-events";
 import type {
   AuthTestResponse,
@@ -16,9 +18,12 @@ import type {
   ConversationsHistoryResponse,
   ConversationsHistoryArguments,
 } from "@slack/web-api";
+import type { oauth2_v2 } from "googleapis";
 
 // Store
-export const el_api_getFromStore = (key: string): Promise<string | undefined> => {
+export const el_api_getFromStore = (
+  key: string
+): Promise<string | undefined> => {
   return window.electron.invoke(GET_FROM_STORE, key);
 };
 
@@ -35,9 +40,10 @@ export const el_api_initSlackAuth = (): Promise<{ success: boolean }> => {
   return window.electron.invoke(SLACK_INIT_AUTH);
 };
 
-export const el_api_getSlackConversations = (): Promise<ConversationsListResponse> => {
-  return window.electron.invoke(SLACK_GET_CONVERSATIONS);
-};
+export const el_api_getSlackConversations =
+  (): Promise<ConversationsListResponse> => {
+    return window.electron.invoke(SLACK_GET_CONVERSATIONS);
+  };
 
 export const el_api_getSlackConversationHistory = (
   args: ConversationsHistoryArguments
@@ -49,6 +55,17 @@ export const el_api_getSlackAuth = (): Promise<AuthTestResponse> => {
   return window.electron.invoke(SLACK_GET_AUTH);
 };
 
-export const el_api_getSlackUser = (args: UsersInfoArguments): Promise<UsersInfoResponse> => {
+export const el_api_getSlackUser = (
+  args: UsersInfoArguments
+): Promise<UsersInfoResponse> => {
   return window.electron.invoke(GET_USER, args);
+};
+
+// Google
+export const el_api_initGoogleAuth = (): Promise<{ success: boolean }> => {
+  return window.electron.invoke(GOOGLE_INIT_AUTH);
+};
+
+export const el_api_getGoogleAuth = (): Promise<oauth2_v2.Schema$Userinfo> => {
+  return window.electron.invoke(GOOGLE_GET_AUTH);
 };

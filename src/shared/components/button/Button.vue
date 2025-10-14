@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { cn } from "@/shared/utils/cn";
 import { cva, type VariantProps } from "class-variance-authority";
-const variants = cva("p-2 rounded-md cursor-pointer", {
+
+const variants = cva("p-2 rounded-md cursor-pointer h-fit", {
   variants: {
     variant: {
       primary: "bg-primary text-primary-foreground hover:bg-primary/80",
@@ -14,6 +15,11 @@ const variants = cva("p-2 rounded-md cursor-pointer", {
         "bg-transparent text-foreground border border-input hover:bg-accent hover:text-accent-foreground",
       link: "bg-transparent text-foreground underline-offset-4 hover:underline hover:bg-accent hover:text-accent-foreground",
     },
+    size: {
+      sm: "text-sm",
+      md: "text-md",
+      lg: "text-lg",
+    },
     rounded: {
       none: "rounded-none",
       sm: "rounded-sm",
@@ -25,19 +31,21 @@ const variants = cva("p-2 rounded-md cursor-pointer", {
   },
   defaultVariants: {
     variant: "primary",
+    size: "md",
     rounded: "md",
   },
 });
 
 const props = defineProps<{
   variant?: VariantProps<typeof variants>["variant"];
+  size?: VariantProps<typeof variants>["size"];
   rounded?: VariantProps<typeof variants>["rounded"];
 }>();
 </script>
 
 <template>
   <button
-    :class="cn(variants({ variant: props.variant, rounded: props.rounded }), $attrs.class as string)"
+    :class="cn(variants({ variant: props.variant, rounded: props.rounded, size: props.size }), $attrs.class as string)"
   >
     <slot></slot>
   </button>

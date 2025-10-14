@@ -1,4 +1,4 @@
-import { app, BrowserWindow, protocol } from "electron";
+import { app, BrowserWindow } from "electron";
 import { initEnv } from "../../util.js";
 import { setInStore } from "../db/store.js";
 import { SLACK_TOKEN } from "../../../shared/constants/store-keys.js";
@@ -18,7 +18,7 @@ const scope = [
 const redirectUri = process.env.SLACK_REDIRECT_URI || "";
 
 export const handleSlackAuth = (): Promise<{ success: boolean }> => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const slackAuthWindow = new BrowserWindow({
       width: 1200,
       height: 1000,
@@ -28,14 +28,13 @@ export const handleSlackAuth = (): Promise<{ success: boolean }> => {
         ","
       )}&redirect_uri=${redirectUri}`
     );
-    handleSlackAuthRedirect(slackAuthWindow, resolve, reject);
+    handleSlackAuthRedirect(slackAuthWindow, resolve);
   });
 };
 
 function handleSlackAuthRedirect(
   slackAuthWindow: BrowserWindow,
   resolve: (value: any) => void,
-  reject: (reason?: any) => void
 ) {
   let hasToken = false;
   slackAuthWindow.webContents.on("will-redirect", (_, url) => {
@@ -45,7 +44,8 @@ function handleSlackAuthRedirect(
       }, 3000);
     }
   });
-  app.once("open-url", (event, url) => {
+  app.on("open-url", handleSlackAuthRedirect);
+  function handleSlackAuthRedirect(event: any, url: any) {
     event.preventDefault();
     const params = new URL(url).searchParams;
     const slackAccessToken = params.get("slack_access_token");
@@ -53,11 +53,9 @@ function handleSlackAuthRedirect(
     if (slackAccessToken) {
       setInStore(SLACK_TOKEN, slackAccessToken);
     }
-  });
+    app.off("open-url", handleSlackAuthRedirect);
+  }
   slackAuthWindow.on("closed", () => {
     resolve({ success: hasToken });
   });
-  // slackAuthWindow.webContents.on("did-fail-load", (event, errorCode, errorDescription) => {
-  //   reject(new Error(`Failed to load: ${errorDescription}`));
-  // });
 }

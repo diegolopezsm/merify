@@ -1,5 +1,11 @@
 # Merify
 
+## 0.12.0
+
+### Minor Changes
+
+- Add Google API Integration
+
 ## 0.11.1
 
 ### Patch Changes
