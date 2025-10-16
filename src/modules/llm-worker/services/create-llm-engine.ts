@@ -8,6 +8,7 @@ export const models = {
 };
 
 export const createLlmEngine = async (
+  // eslint-disable-next-line no-unused-vars
   loadCallback: (progress: InitProgressReport) => void
 ) => {
   const model = await CreateMLCEngine('Llama-3.1-8B-Instruct-q4f32_1-MLC-1k', {

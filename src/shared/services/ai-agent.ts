@@ -6,6 +6,7 @@ const genai = new GoogleGenAI({
 
 export const askAgent = async (
   prompt: string,
+  // eslint-disable-next-line no-unused-vars
   onChunk: (chunk: string) => void
 ) => {
   const response = await genai.models.generateContentStream({

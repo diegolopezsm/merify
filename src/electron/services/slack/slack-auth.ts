@@ -34,7 +34,8 @@ export const handleSlackAuth = (): Promise<{ success: boolean }> => {
 
 function handleSlackAuthRedirect(
   slackAuthWindow: BrowserWindow,
-  resolve: (value: any) => void
+  // eslint-disable-next-line no-unused-vars
+  resolve: ({ success }: { success: boolean }) => void
 ) {
   let hasToken = false;
   slackAuthWindow.webContents.on('will-redirect', (_, url) => {
@@ -45,7 +46,8 @@ function handleSlackAuthRedirect(
     }
   });
   app.on('open-url', handleSlackAuthRedirect);
-  function handleSlackAuthRedirect(event: any, url: any) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function handleSlackAuthRedirect(event: any, url: string) {
     event.preventDefault();
     const params = new URL(url).searchParams;
     const slackAccessToken = params.get('slack_access_token');
