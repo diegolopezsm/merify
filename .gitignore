@@ -24,3 +24,6 @@ dist-ui
 *.njsproj
 *.sln
 *.sw?
+
+# ESLint cache
+.eslintcache
