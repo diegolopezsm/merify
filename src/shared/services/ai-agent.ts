@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI } from '@google/genai';
 
 const genai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
@@ -9,7 +9,7 @@ export const askAgent = async (
   onChunk: (chunk: string) => void
 ) => {
   const response = await genai.models.generateContentStream({
-    model: "gemini-2.5-flash",
+    model: 'gemini-2.5-flash',
     contents: prompt,
     config: {
       thinkingConfig: {
@@ -19,7 +19,7 @@ export const askAgent = async (
   });
 
   for await (const chunk of response) {
-    onChunk(chunk.text || "");
+    onChunk(chunk.text || '');
   }
 };
 export const slackSummaryPrompt = `Eres un asistente que resume conversaciones de Slack.

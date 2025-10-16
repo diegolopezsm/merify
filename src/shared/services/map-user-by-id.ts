@@ -1,6 +1,6 @@
-import { getSlackUser } from "@/modules/slack/services/get-user-service";
-import { safeRequest } from "../utils/safe-request";
-import { usersStore } from "../store/users";
+import { getSlackUser } from '@/modules/slack/services/get-user-service';
+import { safeRequest } from '../utils/safe-request';
+import { usersStore } from '../store/users';
 
 const { getUser, addUser } = usersStore();
 
@@ -18,7 +18,7 @@ export async function mapUserById(id: string) {
   }
   const user = {
     id: userResponse.id,
-    name: userResponse.name || "",
+    name: userResponse.name || '',
   };
   addUser(user);
   return user;

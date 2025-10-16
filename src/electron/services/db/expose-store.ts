@@ -1,21 +1,21 @@
-import { ipcMain } from "electron";
+import { ipcMain } from 'electron';
 import {
   getStore,
   setInStore,
   getFromStore,
   deleteFromStore,
-} from "./store.js";
+} from './store.js';
 import {
   GET_STORE,
   SET_IN_STORE,
   GET_FROM_STORE,
   DELETE_FROM_STORE,
-} from "../../../shared/constants/electron-api-events.js";
+} from '../../../shared/constants/electron-api-events.js';
 
 export const exposeStore = () => {
   ipcMain.handle(GET_STORE, () => getStore());
   ipcMain.handle(GET_FROM_STORE, (_, key: string) => getFromStore(key));
-  ipcMain.handle(SET_IN_STORE, (_, key: string, value: any) =>
+  ipcMain.handle(SET_IN_STORE, (_, key: string, value: unknown) =>
     setInStore(key, value)
   );
   ipcMain.handle(DELETE_FROM_STORE, (_, key: string) => deleteFromStore(key));

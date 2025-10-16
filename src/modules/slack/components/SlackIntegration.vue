@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import InitSlack from "@/modules/slack/components/InitSlack.vue";
-import Conversations from "@/modules/slack/components/Conversations.vue";
-import { checkSlackAuth } from "@/modules/slack/services/check-slack-auth";
+import { onMounted, ref } from 'vue';
+import InitSlack from '@/modules/slack/components/InitSlack.vue';
+import Conversations from '@/modules/slack/components/Conversations.vue';
+import { checkSlackAuth } from '@/modules/slack/services/check-slack-auth';
 
 const loading = ref(true);
 const hasAuth = ref(false);

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { Card, Toggle, Button } from "@/shared/components";
-import { useStorage } from "@/shared/composables/use-storage";
-import SlackLogo from "@/shared/components/icons/SlackLogo.vue";
-import { SLACK_PLUGIN_ON } from "@/modules/slack/domain/constants";
-import { useAsyncState } from "@/shared/composables/use-async-state";
-import { initSlackAuth } from "@/modules/slack/services/init-slack-auth";
-import { checkSlackAuth } from "@/modules/slack/services/check-slack-auth";
+import { Card, Toggle, Button } from '@/shared/components';
+import { useStorage } from '@/shared/composables/use-storage';
+import SlackLogo from '@/shared/components/icons/SlackLogo.vue';
+import { SLACK_PLUGIN_ON } from '@/modules/slack/domain/constants';
+import { useAsyncState } from '@/shared/composables/use-async-state';
+import { initSlackAuth } from '@/modules/slack/services/init-slack-auth';
+import { checkSlackAuth } from '@/modules/slack/services/check-slack-auth';
 
 const isSlackEnable = useStorage(SLACK_PLUGIN_ON, false);
 

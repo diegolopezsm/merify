@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { Button, Card, Toggle } from "@/shared/components";
-import { useStorage } from "@/shared/composables/use-storage";
-import GmailLogo from "@/modules/gmail/components/GmailLogo.vue";
-import { GMAIL_PLUGIN_ON } from "@/modules/gmail/domain/constants";
-import { useAsyncState } from "@/shared/composables/use-async-state";
-import { initGoogleAuth } from "@/modules/gmail/services/init-google-auth";
-import { checkGoogleAuth } from "@/modules/gmail/services/check-google-auth";
+import { Button, Card, Toggle } from '@/shared/components';
+import { useStorage } from '@/shared/composables/use-storage';
+import GmailLogo from '@/modules/gmail/components/GmailLogo.vue';
+import { GMAIL_PLUGIN_ON } from '@/modules/gmail/domain/constants';
+import { useAsyncState } from '@/shared/composables/use-async-state';
+import { initGoogleAuth } from '@/modules/gmail/services/init-google-auth';
+import { checkGoogleAuth } from '@/modules/gmail/services/check-google-auth';
 
 const {
   state: hasGoogleAuth,

@@ -1,22 +1,20 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { Button } from "@/shared/components";
-import BellIcon from "@/shared/components/icons/BellIcon.vue";
-import PlugIcon from "@/shared/components/icons/PlugIcon.vue";
-import IntegrationsView from "@/modules/integrations-view/IntegrationsView.vue";
-import NotificationsView from "@/modules/notifications-view/NotificationsView.vue";
+import { ref } from 'vue';
+import { Button } from '@/shared/components';
+import BellIcon from '@/shared/components/icons/BellIcon.vue';
+import PlugIcon from '@/shared/components/icons/PlugIcon.vue';
+import IntegrationsView from '@/modules/integrations-view/IntegrationsView.vue';
+import NotificationsView from '@/modules/notifications-view/NotificationsView.vue';
 
-enum ActiveView {
-  Notifications = "notifications",
-  Integrations = "integrations",
-}
+const Notifications = 'notifications';
+const Integrations = 'integrations';
 const tabs = [
   {
-    label: ActiveView.Notifications,
+    label: Notifications,
     icon: BellIcon,
   },
   {
-    label: ActiveView.Integrations,
+    label: Integrations,
     icon: PlugIcon,
   },
 ];
@@ -26,9 +24,9 @@ const views = {
   integrations: IntegrationsView,
 };
 
-const activeView = ref<ActiveView>(ActiveView.Integrations);
+const activeView = ref<string>(Integrations);
 
-const setActiveView = (view: ActiveView) => {
+const setActiveView = (view: string) => {
   activeView.value = view;
 };
 </script>
@@ -39,8 +37,8 @@ const setActiveView = (view: ActiveView) => {
       <div class="flex gap-4 border-b-2 mb-4">
         <Button
           v-for="tab in tabs"
-          class="rounded-b-none flex items-center gap-2"
           :key="tab.label"
+          class="rounded-b-none flex items-center gap-2"
           :variant="activeView === tab.label ? 'primary' : 'ghost'"
           @click="setActiveView(tab.label)"
         >
@@ -49,7 +47,7 @@ const setActiveView = (view: ActiveView) => {
         </Button>
       </div>
       <KeepAlive>
-        <Component :is="views[activeView]" />
+        <Component :is="views[activeView as keyof typeof views]" />
       </KeepAlive>
     </div>
   </div>

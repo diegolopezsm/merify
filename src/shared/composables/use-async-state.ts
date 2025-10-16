@@ -1,4 +1,4 @@
-import { useAsyncState } from "@vueuse/core";
+import { useAsyncState } from '@vueuse/core';
 
 export { useAsyncState };
 

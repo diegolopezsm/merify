@@ -1,17 +1,17 @@
-import path from "path";
-import { app, BrowserWindow, Tray } from "electron";
-import { resolveAssetsPath } from "./path-resolver.js";
+import path from 'path';
+import { app, BrowserWindow, Tray } from 'electron';
+import { resolveAssetsPath } from './path-resolver.js';
 
 export function createTray(mainWindow: BrowserWindow) {
   const tray = new Tray(
-    path.join(resolveAssetsPath(), "/trayIconTemplate.png")
+    path.join(resolveAssetsPath(), '/trayIconTemplate.png')
   );
-  tray.on("click", () => {
+  tray.on('click', () => {
     mainWindow.show();
   });
 
   let willClose = false;
-  mainWindow.on("close", (event) => {
+  mainWindow.on('close', event => {
     if (willClose) {
       return;
     }
@@ -22,11 +22,11 @@ export function createTray(mainWindow: BrowserWindow) {
     }
   });
 
-  app.on("before-quit", () => {
+  app.on('before-quit', () => {
     willClose = true;
   });
 
-  mainWindow.on("show", () => {
+  mainWindow.on('show', () => {
     willClose = false;
     // if (app.dock) {
     //   app.dock.show();

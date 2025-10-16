@@ -1,14 +1,14 @@
-import path from "path";
-import { resolvePreloadPath } from "./path-resolver.js";
-import { exposeStore } from "./services/db/expose-store.js";
-import { app, BrowserWindow, protocol, screen } from "electron";
-import { animateWindowTransition, initEnv, isDev } from "./util.js";
-import { exposeSlackApiMethods } from "./services/slack/expose-slack-api-methods.js";
-import { exposeGoogleApiMethods } from "./services/google/expose-google-api-methods.js";
+import path from 'path';
+import { resolvePreloadPath } from './path-resolver.js';
+import { exposeStore } from './services/db/expose-store.js';
+import { app, BrowserWindow, protocol, screen } from 'electron';
+import { animateWindowTransition, initEnv, isDev } from './util.js';
+import { exposeSlackApiMethods } from './services/slack/expose-slack-api-methods.js';
+import { exposeGoogleApiMethods } from './services/google/expose-google-api-methods.js';
 
 initEnv();
 
-const PROTOCOL = "merify-app";
+const PROTOCOL = 'merify-app';
 
 app.setAsDefaultProtocolClient(PROTOCOL);
 
@@ -42,7 +42,7 @@ function createWidgetWindow() {
     frame: false,
     // alwaysOnTop: true,
     transparent: true,
-    title: "Merify",
+    title: 'Merify',
     enableLargerThanScreen: true,
     opacity: opacity,
     // movable: false,
@@ -55,13 +55,13 @@ function createWidgetWindow() {
     },
   });
   if (isDev()) {
-    mainWindow.loadURL("http://localhost:5173");
+    mainWindow.loadURL('http://localhost:5173');
     mainWindow.webContents.openDevTools();
   } else {
-    mainWindow.loadFile(path.join(app.getAppPath(), "/dist-ui/index.html"));
+    mainWindow.loadFile(path.join(app.getAppPath(), '/dist-ui/index.html'));
   }
 
-  mainWindow.on("focus", () => {
+  mainWindow.on('focus', () => {
     animateWindowTransition(
       mainWindow,
       { width: initialWidgetWidth, height: activeWidgetHeight },

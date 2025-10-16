@@ -1,3 +1,3 @@
-import { useStorage } from "@vueuse/core";
+import { useStorage } from '@vueuse/core';
 
 export { useStorage };

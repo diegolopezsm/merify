@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { Button } from "@/shared/components";
-import { safeRequest } from "@/shared/utils/safe-request";
-import type { Message } from "@/modules/slack/domain/message";
-import { mapUserById } from "@/shared/services/map-user-by-id";
-import { markdownToHtml } from "@/shared/utils/markdown-render";
-import type { Conversation } from "@/modules/slack/domain/coversation";
-import { askAgent, slackSummaryPrompt } from "@/shared/services/ai-agent";
-import { useGetConversations } from "@/modules/slack/composables/use-conversations";
-import { getConversationHistoryService } from "@/modules/slack/services/get-conversation-history-service";
+import { ref } from 'vue';
+import { Button } from '@/shared/components';
+import { safeRequest } from '@/shared/utils/safe-request';
+import type { Message } from '@/modules/slack/domain/message';
+import { mapUserById } from '@/shared/services/map-user-by-id';
+import { markdownToHtml } from '@/shared/utils/markdown-render';
+import type { Conversation } from '@/modules/slack/domain/coversation';
+import { askAgent, slackSummaryPrompt } from '@/shared/services/ai-agent';
+import { useGetConversations } from '@/modules/slack/composables/use-conversations';
+import { getConversationHistoryService } from '@/modules/slack/services/get-conversation-history-service';
 
 const { conversations, loading } = useGetConversations();
 const selectedConversationMessages = ref<Message[]>([]);
-const chatSummary = ref<string>("");
+const chatSummary = ref<string>('');
 
 async function getConversationHistory(conversation: Conversation) {
   if (!conversation) return;
@@ -30,7 +30,7 @@ async function getConversationHistory(conversation: Conversation) {
     response?.messages || []
   );
   selectedConversationMessages.value = messagesWithUser;
-  chatSummary.value = "";
+  chatSummary.value = '';
 }
 
 async function addUserNameToMessages(messages: Message[]) {
@@ -48,9 +48,11 @@ async function addUserNameToMessages(messages: Message[]) {
 async function onConversationClick(conversation: Conversation) {
   await getConversationHistory(conversation);
   const initPrompt = slackSummaryPrompt;
-  const chat = selectedConversationMessages.value.map((message) => (`${message.timestamp} - ${message.text}`)).join("\n\n");
+  const chat = selectedConversationMessages.value
+    .map(message => `${message.timestamp} - ${message.text}`)
+    .join('\n\n');
   const prompt = `${initPrompt}:\n\n${chat}`;
-  askAgent(prompt, (chunk) => {
+  askAgent(prompt, chunk => {
     chatSummary.value += chunk;
   });
 }

@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 body {
   background-image: url('assets/bg.png');
@@ -10,7 +10,6 @@ body {
   height: 100vh;
   width: 100vw;
 }
-
 
 @custom-variant dark (&:is(.dark *));
 

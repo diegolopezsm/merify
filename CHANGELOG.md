@@ -1,5 +1,11 @@
 # Merify
 
+## 0.13.0
+
+### Minor Changes
+
+- Add eslint and prettier
+
 ## 0.12.0
 
 ### Minor Changes

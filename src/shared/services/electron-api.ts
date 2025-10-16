@@ -3,8 +3,8 @@ import {
   GET_FROM_STORE,
   DELETE_FROM_STORE,
   SLACK_GET_CONVERSATIONS,
-} from "@/shared/constants/electron-api-events";
-import type { ConversationsListResponse } from "@slack/web-api";
+} from '@/shared/constants/electron-api-events';
+import type { ConversationsListResponse } from '@slack/web-api';
 
 // Store
 export const el_api_getFromStore = (
@@ -13,7 +13,7 @@ export const el_api_getFromStore = (
   return window.electron.invoke(GET_FROM_STORE, key);
 };
 
-export const el_api_setInStore = (key: string, value: any) => {
+export const el_api_setInStore = (key: string, value: unknown) => {
   return window.electron.invoke(SET_IN_STORE, key, value);
 };
 

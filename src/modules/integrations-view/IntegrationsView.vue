@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import ActiveSlack from "@/modules/slack/components/SlackActivation.vue";
-import ActiveGmail from "@/modules/gmail/components/GmailActivation.vue";
+import ActiveSlack from '@/modules/slack/components/SlackActivation.vue';
+import ActiveGmail from '@/modules/gmail/components/GmailActivation.vue';
 </script>
 
 <template>

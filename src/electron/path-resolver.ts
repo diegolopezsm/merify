@@ -1,19 +1,15 @@
-import path from "path";
-import { app } from "electron";
-import { isDev } from "./util.js";
+import path from 'path';
+import { app } from 'electron';
+import { isDev } from './util.js';
 
 export const resolvePreloadPath = () => {
   return path.join(
     app.getAppPath(),
-    isDev() ? "." : ".",
+    isDev() ? '.' : '.',
     '/dist/electron/preload.cjs'
   );
 };
 
 export const resolveAssetsPath = () => {
-  return path.join(
-    app.getAppPath(),
-    isDev() ? "." : ".",
-    '/src/assets'
-  );
+  return path.join(app.getAppPath(), isDev() ? '.' : '.', '/src/assets');
 };

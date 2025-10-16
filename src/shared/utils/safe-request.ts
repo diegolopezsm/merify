@@ -1,5 +1,5 @@
 export const safeRequest = async <T>(
-  fn: () => Promise<T>,
+  fn: () => Promise<T>
 ): Promise<[T | undefined, Error | undefined]> => {
   try {
     const data = await fn();

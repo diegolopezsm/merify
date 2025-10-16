@@ -3,11 +3,11 @@
 // Escapa HTML para evitar inyectar tags/JS
 function escapeHtml(str: string) {
   return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 // Reemplazos inline (operan sobre texto ya escapado)
@@ -29,29 +29,29 @@ function inlineFormats(text: string) {
   );
 
   // bold **text** or __text__
-  text = text.replace(/\*\*([^\*]+)\*\*/g, "<strong>$1</strong>");
-  text = text.replace(/__([^_]+)__/g, "<strong>$1</strong>");
+  text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  text = text.replace(/__([^_]+)__/g, '<strong>$1</strong>');
 
   // italic *text* or _text_
-  text = text.replace(/\*([^*]+)\*/g, "<em>$1</em>");
-  text = text.replace(/_([^_]+)_/g, "<em>$1</em>");
+  text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  text = text.replace(/_([^_]+)_/g, '<em>$1</em>');
 
   return text;
 }
 
 // Parser lineal que maneja bloques (codeblocks, lists, blockquotes, headings)
 export function markdownToHtml(md: string) {
-  if (!md) return "";
+  if (!md) return '';
 
   // 1) Normalizamos saltos y escapamos todo (para seguridad)
   // Escapamos antes de insertar HTML generado por nosotros.
-  const escaped = escapeHtml(md.replace(/\r\n/g, "\n"));
+  const escaped = escapeHtml(md.replace(/\r\n/g, '\n'));
 
-  const lines = escaped.split("\n");
+  const lines = escaped.split('\n');
 
-  let html = "";
+  let html = '';
   let inCodeBlock = false;
-  let codeBuffer = "";
+  let codeBuffer = '';
 
   let listType: string | null = null; // 'ul' or 'ol'
   let listBuffer: string[] = [];
@@ -60,7 +60,7 @@ export function markdownToHtml(md: string) {
   let blockquoteBuffer: string[] = [];
 
   const flushParagraph = (p: string) => {
-    if (p.trim() !== "") html += `<p>${inlineFormats(p)}</p>\n`;
+    if (p.trim() !== '') html += `<p>${inlineFormats(p)}</p>\n`;
   };
 
   const flushList = () => {
@@ -76,7 +76,7 @@ export function markdownToHtml(md: string) {
 
   const flushBlockquote = () => {
     if (!inBlockquote) return;
-    html += `<blockquote>\n${blockquoteBuffer.join("\n")}\n</blockquote>\n`;
+    html += `<blockquote>\n${blockquoteBuffer.join('\n')}\n</blockquote>\n`;
     blockquoteBuffer = [];
     inBlockquote = false;
   };
@@ -85,7 +85,7 @@ export function markdownToHtml(md: string) {
 
   const flushParagraphBuffer = () => {
     if (paragraphBuffer.length === 0) return;
-    flushParagraph(paragraphBuffer.join(" "));
+    flushParagraph(paragraphBuffer.join(' '));
     paragraphBuffer = [];
   };
 
@@ -93,11 +93,11 @@ export function markdownToHtml(md: string) {
     const raw = lines[i];
 
     // code block fence ```
-    if (raw?.trim().startsWith("```")) {
+    if (raw?.trim().startsWith('```')) {
       if (inCodeBlock) {
         // close
         html += `<pre><code>${codeBuffer}</code></pre>\n`;
-        codeBuffer = "";
+        codeBuffer = '';
         inCodeBlock = false;
       } else {
         // open
@@ -111,16 +111,16 @@ export function markdownToHtml(md: string) {
 
     if (inCodeBlock) {
       // preservamos tal cual (ya escapado)
-      codeBuffer += raw + "\n";
+      codeBuffer += raw + '\n';
       continue;
     }
 
     // horizontal rule
-    if (/^(\*\s*\*\s*\*|-{3,}|_{3,})\s*$/.test(raw || "")) {
+    if (/^(\*\s*\*\s*\*|-{3,}|_{3,})\s*$/.test(raw || '')) {
       flushParagraphBuffer();
       flushList();
       flushBlockquote();
-      html += "<hr />\n";
+      html += '<hr />\n';
       continue;
     }
 
@@ -131,7 +131,7 @@ export function markdownToHtml(md: string) {
       flushList();
       flushBlockquote();
       const level = hMatch[1]?.length || 0;
-      const content = inlineFormats(hMatch[2]?.trim() || "");
+      const content = inlineFormats(hMatch[2]?.trim() || '');
       html += `<h${level}>${content}</h${level}>\n`;
       continue;
     }
@@ -142,7 +142,7 @@ export function markdownToHtml(md: string) {
       flushParagraphBuffer();
       flushList();
       inBlockquote = true;
-      blockquoteBuffer.push(`<p>${inlineFormats(bqMatch[1] || "")}</p>`);
+      blockquoteBuffer.push(`<p>${inlineFormats(bqMatch[1] || '')}</p>`);
       continue;
     }
 
@@ -151,9 +151,9 @@ export function markdownToHtml(md: string) {
     if (olMatch) {
       flushParagraphBuffer();
       flushBlockquote();
-      if (listType && listType !== "ol") flushList();
-      listType = "ol";
-      listBuffer.push(olMatch[1] || "");
+      if (listType && listType !== 'ol') flushList();
+      listType = 'ol';
+      listBuffer.push(olMatch[1] || '');
       continue;
     }
 
@@ -162,14 +162,14 @@ export function markdownToHtml(md: string) {
     if (ulMatch) {
       flushParagraphBuffer();
       flushBlockquote();
-      if (listType && listType !== "ul") flushList();
-      listType = "ul";
-      listBuffer.push(ulMatch[1] || "");
+      if (listType && listType !== 'ul') flushList();
+      listType = 'ul';
+      listBuffer.push(ulMatch[1] || '');
       continue;
     }
 
     // empty line -> flush paragraph / lists / blockquotes
-    if (raw?.trim() === "") {
+    if (raw?.trim() === '') {
       flushParagraphBuffer();
       flushList();
       flushBlockquote();
@@ -177,7 +177,7 @@ export function markdownToHtml(md: string) {
     }
 
     // normal paragraph line -> accumulate
-    paragraphBuffer.push(raw?.trim() || "");
+    paragraphBuffer.push(raw?.trim() || '');
   }
 
   // fin de loop: flush todo
