@@ -9,6 +9,8 @@ const variants = cva('p-2 rounded-md cursor-pointer h-fit', {
       secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
       destructive:
         'bg-destructive text-destructive-foreground hover:bg-destructive/80',
+      destructiveText:
+        'bg-destructive/10 text-destructive hover:bg-destructive/20',
       ghost:
         'bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground',
       outline:

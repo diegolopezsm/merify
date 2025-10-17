@@ -1,7 +1,10 @@
 import { app, shell } from 'electron';
 import { initEnv } from '../../util.js';
 import { setInStore } from '../db/store.js';
-import { GOOGLE_TOKEN } from '../../../shared/constants/store-keys.js';
+import {
+  GOOGLE_TOKEN,
+  GOOGLE_REFRESH_TOKEN,
+} from '../../../shared/constants/store-keys.js';
 
 initEnv();
 
@@ -19,14 +22,16 @@ function handleGoogleAuthRedirect(
 ) {
   let hasToken = false;
   app.on('open-url', handleGoogleAuthRedirect);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function handleGoogleAuthRedirect(event: any, url: string) {
+  function handleGoogleAuthRedirect(event: any, url: any) {
     event.preventDefault();
     const params = new URL(url).searchParams;
     const googleAccessToken = params.get('google_access_token');
+    const googleRefreshToken = params.get('google_refresh_token');
     hasToken = !!googleAccessToken;
+
     if (googleAccessToken) {
       setInStore(GOOGLE_TOKEN, googleAccessToken);
+      setInStore(GOOGLE_REFRESH_TOKEN, googleRefreshToken);
     }
     resolve({ success: hasToken });
     app.off('open-url', handleGoogleAuthRedirect);

@@ -24,7 +24,7 @@ const views = {
   integrations: IntegrationsView,
 };
 
-const activeView = ref<string>(Integrations);
+const activeView = ref<string>(Notifications);
 
 const setActiveView = (view: string) => {
   activeView.value = view;
@@ -34,7 +34,9 @@ const setActiveView = (view: string) => {
 <template>
   <div class="pb-2 py-7 px-2">
     <div class="px-4 bg-white shadow rounded-md py-4">
-      <div class="flex gap-4 border-b-2 mb-4">
+      <div
+        class="flex gap-4 border-b-2 mb-4 sticky top-0 bg-white pt-2 shadow-md"
+      >
         <Button
           v-for="tab in tabs"
           :key="tab.label"

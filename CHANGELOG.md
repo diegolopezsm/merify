@@ -1,5 +1,11 @@
 # Merify
 
+## 0.14.0
+
+### Minor Changes
+
+- Show gmail threads list
+
 ## 0.13.0
 
 ### Minor Changes

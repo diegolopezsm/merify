@@ -11,6 +11,5 @@ export const SLACK_GET_CONVERSATION_HISTORY = 'slack:get-conversation-history';
 
 export const GOOGLE_INIT_AUTH = 'google:init-auth';
 export const GOOGLE_GET_AUTH = 'google:get-auth';
-export const GOOGLE_GET_PROFILE = 'google:get-profile';
-export const GOOGLE_GET_EMAILS = 'google:get-emails';
-export const GOOGLE_GET_EMAIL_DETAILS = 'google:get-email-details';
+export const GOOGLE_GET_THREADS = 'google:get-threads';
+export const GOOGLE_GET_THREAD_DETAILS = 'google:get-thread-details';
