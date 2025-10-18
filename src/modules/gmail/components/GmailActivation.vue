@@ -25,7 +25,7 @@ async function handleAuthClick() {
 <template>
   <Card class="flex gap-2 p-4 w-full justify-between max-w-80">
     <div class="flex gap-3">
-      <GmailLogo />
+      <GmailLogo class="size-10 object-contain" />
       <div>
         <p>Gmail</p>
         <p class="text-sm text-muted-foreground">

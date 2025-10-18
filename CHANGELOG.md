@@ -1,5 +1,13 @@
 # Merify
 
+## 1.0.0
+
+### Major Changes
+
+- First MVP
+- User can list unread gmail threads
+- Thread can be mark as read and deleted
+
 ## 0.16.1
 
 ### Patch Changes

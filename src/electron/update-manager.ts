@@ -1,5 +1,6 @@
 import { BrowserWindow, dialog } from 'electron';
-import { autoUpdater } from 'electron-updater';
+import pkg from 'electron-updater';
+const { autoUpdater } = pkg;
 
 export function setupAutoUpdater(win: BrowserWindow) {
   // No descargar automáticamente
@@ -10,25 +11,16 @@ export function setupAutoUpdater(win: BrowserWindow) {
   //   autoUpdater.logger = log;
   //   (autoUpdater.logger as any).transports.file.level = 'info';
 
-  autoUpdater.on('checking-for-update', () => {
-    console.log('Buscando actualizaciones...');
-  });
-
   autoUpdater.on('update-available', info => {
-    console.log('Actualización disponible:', info.version);
     const choice = dialog.showMessageBoxSync(win, {
       type: 'info',
-      buttons: ['Actualizar', 'Cancelar'],
-      title: 'Nueva versión disponible',
-      message: `Hay una nueva versión (${info.version}). ¿Deseas descargarla ahora?`,
+      buttons: ['Update', 'Cancel'],
+      title: 'New version available',
+      message: `A new version (${info.version}) is available. Do you want to download it now?`,
     });
     if (choice === 0) {
       autoUpdater.downloadUpdate();
     }
-  });
-
-  autoUpdater.on('update-not-available', () => {
-    console.log('No hay actualizaciones disponibles.');
   });
 
   autoUpdater.on('error', err => {
@@ -36,18 +28,17 @@ export function setupAutoUpdater(win: BrowserWindow) {
   });
 
   autoUpdater.on('download-progress', progressObj => {
-    const percent = progressObj.percent.toFixed(1);
+    // const percent = progressObj.percent.toFixed(1);
     win.setProgressBar(progressObj.percent / 100);
-    console.log(`Descargando... ${percent}%`);
+    // console.log(`Descargando... ${percent}%`);
   });
 
   autoUpdater.on('update-downloaded', () => {
     const choice = dialog.showMessageBoxSync(win, {
       type: 'question',
-      buttons: ['Instalar y reiniciar', 'Más tarde'],
-      title: 'Actualizar Merify',
-      message:
-        'La actualización está lista. ¿Quieres reiniciar para instalarla?',
+      buttons: ['Install and restart', 'Later'],
+      title: 'Update Merify',
+      message: 'The update is ready. Do you want to restart to install it?',
     });
     if (choice === 0) {
       autoUpdater.quitAndInstall();
@@ -56,7 +47,6 @@ export function setupAutoUpdater(win: BrowserWindow) {
     }
   });
 
-  // Buscar al iniciar (o podrías llamarlo desde un menú manual)
   setTimeout(() => {
     autoUpdater.checkForUpdates();
   }, 3000);

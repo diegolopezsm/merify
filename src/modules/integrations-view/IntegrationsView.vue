@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ActiveSlack from '@/modules/slack/components/SlackActivation.vue';
+// import ActiveSlack from '@/modules/slack/components/SlackActivation.vue';
 import ActiveGmail from '@/modules/gmail/components/GmailActivation.vue';
 </script>
 
@@ -10,7 +10,7 @@ import ActiveGmail from '@/modules/gmail/components/GmailActivation.vue';
       Connect your accounts to receive notifications
     </p>
     <div class="flex flex-wrap gap-3 w-full">
-      <ActiveSlack />
+      <!-- <ActiveSlack /> -->
       <ActiveGmail />
     </div>
   </div>

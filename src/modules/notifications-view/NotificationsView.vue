@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
+import { safeRequest } from '@/shared/utils/safe-request';
 import { getThreads } from '@/modules/gmail/services/get-threads';
 import { useAsyncState } from '@/shared/composables/use-async-state';
 import { getGoogleAuth } from '@/modules/gmail/services/get-google-auth';
@@ -18,11 +19,16 @@ const {
   }
 );
 
-onMounted(() => {
-  getGoogleAuth().then(() => {
-    // wait for google auth to be initialized before getting threads
+onMounted(async () => {
+  const [googleAuth, error] = await safeRequest(() => getGoogleAuth());
+  if (error) {
+    await getGoogleAuth().then(() => {
+      executeGetThreads();
+    });
+  }
+  if (googleAuth) {
     executeGetThreads();
-  });
+  }
 });
 </script>
 

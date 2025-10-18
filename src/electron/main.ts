@@ -1,11 +1,11 @@
 import path from 'path';
 import { resolvePreloadPath } from './path-resolver.js';
+import { setupAutoUpdater } from './update-manager.js';
 import { exposeStore } from './services/db/expose-store.js';
 import { app, BrowserWindow, protocol, screen } from 'electron';
 import { animateWindowTransition, initEnv, isDev } from './util.js';
 import { exposeSlackApiMethods } from './services/slack/expose-slack-api-methods.js';
 import { exposeGoogleApiMethods } from './services/google/expose-google-api-methods.js';
-import { setupAutoUpdater } from './update-manager.js';
 
 initEnv();
 
@@ -18,7 +18,9 @@ protocol.registerSchemesAsPrivileged([
 ]);
 
 app.whenReady().then(() => {
-  // app.dock?.hide();
+  if (!isDev()) {
+    app.dock?.hide();
+  }
   const mainWindow = createWidgetWindow();
   exposeSlackApiMethods();
   exposeGoogleApiMethods();
@@ -30,35 +32,34 @@ function createWidgetWindow() {
   const { width: screenWidth, height: screenHeight } =
     screen.getPrimaryDisplay().bounds;
 
-  const initialWidgetWidth = 1000;
+  const initialWidgetWidth = 500;
   const initialWidgetHeight = 30;
   const activeWidgetHeight = screenHeight / 2 + 300;
   const paddingRight = 10;
   const paddingBottom = 0;
   const activeOpacity = 1;
-  const opacity = 0.2;
+  const opacity = 0.3;
 
   const mainWindow = new BrowserWindow({
     width: initialWidgetWidth,
     height: initialWidgetHeight,
     frame: false,
-    // alwaysOnTop: true,
+    alwaysOnTop: true,
     transparent: true,
     title: 'Merify',
     enableLargerThanScreen: true,
     opacity: opacity,
-    // movable: false,
-    // resizable: false,
+    movable: false,
+    resizable: true,
     y: screenHeight - initialWidgetHeight - paddingBottom,
     x: screenWidth - initialWidgetWidth - paddingRight,
-    // kiosk: true,
     webPreferences: {
       preload: resolvePreloadPath(),
     },
   });
   if (isDev()) {
     mainWindow.loadURL('http://localhost:5173');
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
   } else {
     mainWindow.loadFile(path.join(app.getAppPath(), '/dist-ui/index.html'));
   }
@@ -74,17 +75,18 @@ function createWidgetWindow() {
       activeOpacity
     );
   });
-  // mainWindow.on("blur", () => {
-  //   animateWindowTransition(
-  //     mainWindow,
-  //     { width: initialWidgetWidth, height: initialWidgetHeight },
-  //     {
-  //       x: screenWidth - initialWidgetWidth - paddingRight,
-  //       y: screenHeight - initialWidgetHeight - paddingBottom,
-  //     },
-  //     opacity
-  //   );
-  // });
+
+  mainWindow.on('blur', () => {
+    animateWindowTransition(
+      mainWindow,
+      { width: initialWidgetWidth, height: initialWidgetHeight },
+      {
+        x: screenWidth - initialWidgetWidth - paddingRight,
+        y: screenHeight - initialWidgetHeight - paddingBottom,
+      },
+      opacity
+    );
+  });
 
   return mainWindow;
 }
