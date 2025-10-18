@@ -50,7 +50,14 @@
         "zip"
       ],
       "artifactName": "${productName}-${version}-win.${ext}"
-    }
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "diegolopezsm",
+        "repo": "merify"
+      }
+    ]
   },
   "dependencies": {
     "@google/genai": "^1.20.0",
