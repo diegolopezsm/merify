@@ -1,5 +1,12 @@
 # Merify
 
+## 0.16.0
+
+### Minor Changes
+
+- Now user can mark thread as read
+- Now user can delete threads
+
 ## 0.15.0
 
 ### Minor Changes

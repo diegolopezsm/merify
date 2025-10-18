@@ -14,3 +14,4 @@ export const GOOGLE_GET_AUTH = 'google:get-auth';
 export const GOOGLE_GET_THREADS = 'google:get-threads';
 export const GOOGLE_GET_THREAD_DETAILS = 'google:get-thread-details';
 export const GOOGLE_SEND_THREAD_TO_TRASH = 'google:send-thread-to-trash';
+export const GOOGLE_MARK_THREAD_AS_READ = 'google:mark-thread-as-read';

@@ -6,7 +6,7 @@ import { cn } from '@/shared/utils/cn';
   <div
     :class="
       cn(
-        'bg-white rounded-lg shadow px-4 py-2 w-fit hover:shadow-lg  border border-gray-200 transition-all duration-300',
+        'bg-white rounded-lg shadow px-4 py-2 w-fit hover:shadow-md  border border-gray-300 transition-all duration-300',
         $attrs.class as string
       )
     "

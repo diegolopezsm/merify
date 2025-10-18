@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Button } from '@/shared/components';
-import TrashIcon from '@/shared/components/icons/TrashIcon.vue';
 import type { GmailThread } from '@/modules/gmail/domain/thread';
 import { useAsyncState } from '@/shared/composables/use-async-state';
-import { sendThreadToTrash } from '@/modules/gmail/services/send-thread-to-trash';
+import MailOpenIcon from '@/shared/components/icons/MailOpenIcon.vue';
+import { markThreadAsRead } from '@/modules/gmail/services/mark-thread-as-read';
 
 const props = defineProps<{
   thread: GmailThread;
@@ -12,7 +12,7 @@ const props = defineProps<{
 const emit = defineEmits(['onSuccess']);
 
 const { isLoading, execute } = useAsyncState(
-  () => sendThreadToTrash(props.thread.id),
+  () => markThreadAsRead(props.thread.id),
   null,
   {
     immediate: false,
@@ -25,13 +25,13 @@ const { isLoading, execute } = useAsyncState(
 
 <template>
   <Button
-    variant="destructiveText"
+    variant="secondaryText"
     size="sm"
-    title="Move to trash"
-    class="border border-destructive"
+    title="Mark as read"
+    class="border border-secondary"
     :disabled="isLoading"
     @click="execute()"
   >
-    <TrashIcon class="w-4 h-4 cursor-pointer" />
+    <MailOpenIcon class="w-4 h-4 cursor-pointer" />
   </Button>
 </template>

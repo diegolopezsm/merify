@@ -35,7 +35,7 @@ const setActiveView = (view: string) => {
   <div class="pb-2 py-7 px-2">
     <div class="px-4 bg-white shadow rounded-md py-4">
       <div
-        class="flex gap-4 border-b-2 mb-4 sticky top-0 bg-white pt-2 shadow-md"
+        class="flex gap-4 border-b-2 mb-4 sticky z-50 top-0 bg-white pt-2 shadow-md"
       >
         <Button
           v-for="tab in tabs"
