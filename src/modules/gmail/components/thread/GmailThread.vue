@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, useTemplateRef } from 'vue';
 import { Card } from '@/shared/components';
 import type { GmailThread } from '@/modules/gmail/domain/thread';
 import GmailLogo from '@/modules/gmail/components/GmailLogo.vue';
@@ -7,6 +7,7 @@ import { useAsyncState } from '@/shared/composables/use-async-state';
 import MarkAsRead from '@/modules/gmail/components/thread/MarkAsRead.vue';
 import DeleteThread from '@/modules/gmail/components/thread/DeleteThread.vue';
 import { getThreadDetails } from '@/modules/gmail/services/get-thread-details';
+import { useIntersectionObserver } from '@/shared/composables/use-intersection-observer';
 
 const props = defineProps<{
   thread: GmailThread;
@@ -14,13 +15,23 @@ const props = defineProps<{
 
 const shouldHide = ref(false);
 
-const { state: threadDetails } = useAsyncState(
-  () => getThreadDetails(props.thread.id, { format: 'full' }),
-  null,
-  {
-    immediate: true,
+const { state: threadDetails, execute: executeGetThreadDetails } =
+  useAsyncState(
+    () => getThreadDetails(props.thread.id, { format: 'full' }),
+    null,
+    {
+      immediate: false,
+    }
+  );
+
+const target = useTemplateRef('target');
+
+const { stop } = useIntersectionObserver(target, async ([entry]) => {
+  if (entry?.isIntersecting) {
+    executeGetThreadDetails();
+    stop();
   }
-);
+});
 
 const hideThread = () => {
   shouldHide.value = true;
@@ -30,6 +41,7 @@ const hideThread = () => {
 <template>
   <div
     v-if="!shouldHide"
+    ref="target"
     class="flex flex-col relative [&_.t-button]:translate-y-11 hover:[&_.t-button]:translate-y-1"
   >
     <div class="flex justify-between gap-2 pr-2">
