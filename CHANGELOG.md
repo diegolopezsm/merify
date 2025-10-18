@@ -1,5 +1,11 @@
 # Merify
 
+## 0.16.1
+
+### Patch Changes
+
+- Only get thread details if is visible on screen
+
 ## 0.16.0
 
 ### Minor Changes
