@@ -15,6 +15,7 @@
     "build:mac": "rm -rf dist && rm -rf dist-ui && npm run transpile:electron && npm run build && electron-builder --mac --arm64",
     "build:win": "rm -rf dist && rm -rf dist-ui && npm run transpile:electron && npm run build && electron-builder --win --x64",
     "build:linux": "rm -rf dist && rm -rf dist-ui && npm run transpile:electron && npm run build && electron-builder --linux --x64",
+    "build:release": "npm run transpile:electron && npm run build && electron-builder -mw",
     "change-add": "npx @changesets/cli",
     "change-apply": "npx @changesets/cli version",
     "lint": "eslint . --ext .vue,.js,.ts,.jsx,.tsx",
@@ -26,6 +27,7 @@
   },
   "build": {
     "appId": "com.merify.app",
+    "productName": "Merify",
     "icon": "merify-logo.png",
     "files": [
       "dist",
@@ -36,17 +38,18 @@
       "output": "release"
     },
     "mac": {
-      "category": "public.app-category.productivity"
+      "target": [
+        "dmg"
+      ],
+      "category": "public.app-category.productivity",
+      "artifactName": "${productName}-${version}-mac.${ext}"
     },
     "win": {
       "target": [
-        "nsis"
-      ]
-    },
-    "linux": {
-      "target": [
-        "AppImage"
-      ]
+        "nsis",
+        "zip"
+      ],
+      "artifactName": "${productName}-${version}-win.${ext}"
     }
   },
   "dependencies": {
@@ -60,6 +63,7 @@
     "clsx": "^2.1.1",
     "dotenv": "^17.2.3",
     "electron-store": "^10.1.0",
+    "electron-updater": "^6.6.2",
     "keytar": "^7.9.0",
     "os-utils": "^0.0.14",
     "tailwind-merge": "^3.3.1",

@@ -5,6 +5,7 @@ import { app, BrowserWindow, protocol, screen } from 'electron';
 import { animateWindowTransition, initEnv, isDev } from './util.js';
 import { exposeSlackApiMethods } from './services/slack/expose-slack-api-methods.js';
 import { exposeGoogleApiMethods } from './services/google/expose-google-api-methods.js';
+import { setupAutoUpdater } from './update-manager.js';
 
 initEnv();
 
@@ -18,10 +19,11 @@ protocol.registerSchemesAsPrivileged([
 
 app.whenReady().then(() => {
   // app.dock?.hide();
-  createWidgetWindow();
+  const mainWindow = createWidgetWindow();
   exposeSlackApiMethods();
   exposeGoogleApiMethods();
   exposeStore();
+  setupAutoUpdater(mainWindow);
 });
 
 function createWidgetWindow() {
