@@ -8,7 +8,7 @@ import {
 
 initEnv();
 
-export const handleGoogleAuth = () => {
+export const initGoogleAuth = () => {
   shell.openExternal(`${process.env.API_URL}/google/auth/start`);
 
   return new Promise(resolve => {

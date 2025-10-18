@@ -15,6 +15,11 @@ interface RefreshTokenResponse {
   error?: string;
 }
 
+/**
+ * Refreshes the Google access token
+ * Automatically handles token refresh if the current token is expired
+ * @returns The response from the API
+ */
 export const refreshToken = async (): Promise<RefreshTokenResponse> => {
   const refreshToken = getFromStore(GOOGLE_REFRESH_TOKEN) as string;
   if (!refreshToken) {

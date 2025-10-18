@@ -57,6 +57,9 @@ interface GmailThreadDetailsResponse {
 /**
  * Gets detailed information for a specific Gmail thread
  * Automatically handles token refresh if the current token is expired
+ * @param threadId - The ID of the thread to get details for
+ * @param params - The parameters for the request
+ * @returns The response from the API
  */
 export const getThreadDetails = async (
   threadId: string,

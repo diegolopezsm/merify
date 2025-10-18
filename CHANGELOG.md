@@ -1,5 +1,11 @@
 # Merify
 
+## 0.15.0
+
+### Minor Changes
+
+- Add haibility to delete thread
+
 ## 0.14.0
 
 ### Minor Changes

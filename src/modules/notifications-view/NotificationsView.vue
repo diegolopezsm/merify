@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { getThreads } from '@/modules/gmail/services/get-threads';
-import GmailThread from '@/modules/gmail/components/GmailThread.vue';
 import { useAsyncState } from '@/shared/composables/use-async-state';
+import GmailThread from '@/modules/gmail/components/thread/GmailThread.vue';
 
 const { state: threadsResponse, isLoading } = useAsyncState(
-  () => getThreads({ q: 'is:unread', maxResults: 5 }),
+  () => getThreads({ q: 'is:unread' }),
   { threads: [] }
 );
 </script>

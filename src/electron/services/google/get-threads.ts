@@ -23,6 +23,8 @@ interface GmailThreadsResponse {
 /**
  * Gets Gmail threads for the authenticated user
  * Automatically handles token refresh if the current token is expired
+ * @param params - The parameters for the request
+ * @returns The response from the API
  */
 export const getThreads = async (
   params: ThreadsListParams = {}

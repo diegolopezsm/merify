@@ -9,6 +9,9 @@ interface FetchWithTokenOptions {
   url: string;
   params?: Record<string, string | number | string[] | undefined>;
   operationName: string;
+  method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  body?: any;
+  headers?: Record<string, string>;
 }
 
 /**
@@ -19,6 +22,9 @@ export const fetchWithToken = async <T>({
   url,
   params = {},
   operationName,
+  method = 'GET',
+  body,
+  headers = {},
 }: FetchWithTokenOptions): Promise<T> => {
   const token = getFromStore(GOOGLE_TOKEN) as string;
 
@@ -47,7 +53,10 @@ export const fetchWithToken = async <T>({
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
+        ...headers,
       },
+      method,
+      body,
     });
 
     if (!response.ok) {
