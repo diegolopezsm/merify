@@ -1,24 +1,16 @@
 <script setup lang="ts">
 import { Button, Card, Toggle } from '@/shared/components';
-import { useStorage } from '@/shared/composables/use-storage';
 import GmailLogo from '@/modules/gmail/components/GmailLogo.vue';
-import { GMAIL_PLUGIN_ON } from '@/modules/gmail/domain/constants';
-import { useAsyncState } from '@/shared/composables/use-async-state';
-import { initGoogleAuth } from '@/modules/gmail/services/init-google-auth';
-import { checkGoogleAuth } from '@/modules/gmail/services/check-google-auth';
+import { useGoogleAuth } from '@/modules/gmail/composables/use-google-auth';
+import { useEnableGmail } from '@/modules/gmail/composables/use-enable-gmail';
 
-const {
-  state: hasGoogleAuth,
-  isLoading,
-  execute,
-} = useAsyncState(() => checkGoogleAuth(), false);
+const { googleAuth, isLoading, initGoogleAuth } = useGoogleAuth();
 
-const isGmailEnable = useStorage(GMAIL_PLUGIN_ON, false);
+const { isGmailEnable, setIsGmailEnable } = useEnableGmail();
 
 async function handleAuthClick() {
   const auth = await initGoogleAuth();
-  isGmailEnable.value = auth.success;
-  execute();
+  setIsGmailEnable(auth.success);
 }
 </script>
 
@@ -33,14 +25,14 @@ async function handleAuthClick() {
         </p>
       </div>
       <Button
-        v-if="!hasGoogleAuth"
+        v-if="!googleAuth"
         size="sm"
         :disabled="isLoading"
         @click="handleAuthClick"
       >
         Connect
       </Button>
-      <Toggle v-if="hasGoogleAuth" v-model="isGmailEnable" />
+      <Toggle v-if="googleAuth" v-model="isGmailEnable" />
     </div>
   </Card>
 </template>

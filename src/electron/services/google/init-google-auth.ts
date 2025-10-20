@@ -5,11 +5,12 @@ import {
   GOOGLE_TOKEN,
   GOOGLE_REFRESH_TOKEN,
 } from '../../../shared/constants/store-keys.js';
+import { API_BASE_URL } from '../../../shared/constants/enpoints.js';
 
 initEnv();
 
 export const initGoogleAuth = () => {
-  shell.openExternal(`${process.env.API_URL}/google/auth/start`);
+  shell.openExternal(`${API_BASE_URL}/google/auth/start`);
 
   return new Promise(resolve => {
     handleGoogleAuthRedirect(resolve);

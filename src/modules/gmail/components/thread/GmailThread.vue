@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, useTemplateRef } from 'vue';
 import { Card } from '@/shared/components';
-import type { GmailThread } from '@/modules/gmail/domain/thread';
+import type { GmailThread } from '@/modules/gmail/domain/threads';
 import GmailLogo from '@/modules/gmail/components/GmailLogo.vue';
 import { useAsyncState } from '@/shared/composables/use-async-state';
 import MarkAsRead from '@/modules/gmail/components/thread/MarkAsRead.vue';

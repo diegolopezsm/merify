@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Button } from '@/shared/components';
-import type { GmailThread } from '@/modules/gmail/domain/thread';
+import type { GmailThread } from '@/modules/gmail/domain/threads';
 import { useAsyncState } from '@/shared/composables/use-async-state';
 import MailOpenIcon from '@/shared/components/icons/MailOpenIcon.vue';
 import { markThreadAsRead } from '@/modules/gmail/services/mark-thread-as-read';

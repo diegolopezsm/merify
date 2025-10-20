@@ -3,6 +3,7 @@ import {
   GOOGLE_TOKEN,
   GOOGLE_REFRESH_TOKEN,
 } from '../../../shared/constants/store-keys.js';
+import { API_BASE_URL } from '../../../shared/constants/enpoints.js';
 
 // Declare fetch for Node.js 18+
 declare const fetch: typeof globalThis.fetch;
@@ -26,7 +27,7 @@ export const refreshToken = async (): Promise<RefreshTokenResponse> => {
     throw new Error('No refresh token available');
   }
 
-  const apiUrl = process.env.API_URL;
+  const apiUrl = API_BASE_URL;
 
   if (!apiUrl) {
     throw new Error('API_URL environment variable is not set');

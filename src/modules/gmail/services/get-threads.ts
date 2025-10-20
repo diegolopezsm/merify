@@ -1,18 +1,9 @@
-import type { GmailThread } from '@/modules/gmail/domain/thread';
+import type {
+  ThreadsListParams,
+  GmailThreadsResponse,
+} from '@/modules/gmail/domain/threads';
 import { GOOGLE_GET_THREADS } from '@/shared/constants/electron-api-events';
 
-type ThreadsListParams = {
-  maxResults?: number;
-  pageToken?: string;
-  q?: string;
-  labelIds?: string[];
-};
-
-interface GmailThreadsResponse {
-  threads?: GmailThread[];
-  nextPageToken?: string;
-  resultSizeEstimate?: number;
-}
 const getThreadsService = async (
   args: ThreadsListParams
 ): Promise<GmailThreadsResponse> => {

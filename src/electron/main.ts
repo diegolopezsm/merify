@@ -26,6 +26,7 @@ app.whenReady().then(() => {
   exposeGoogleApiMethods();
   exposeStore();
   setupAutoUpdater(mainWindow);
+  setOpenAtLogin();
 });
 
 function createWidgetWindow() {
@@ -59,7 +60,7 @@ function createWidgetWindow() {
   });
   if (isDev()) {
     mainWindow.loadURL('http://localhost:5173');
-    // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
   } else {
     mainWindow.loadFile(path.join(app.getAppPath(), '/dist-ui/index.html'));
   }
@@ -89,4 +90,11 @@ function createWidgetWindow() {
   });
 
   return mainWindow;
+}
+
+function setOpenAtLogin() {
+  app.setLoginItemSettings({
+    openAtLogin: true,
+    path: app.getPath('exe'),
+  });
 }
