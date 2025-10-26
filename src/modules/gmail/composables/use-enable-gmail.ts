@@ -1,5 +1,6 @@
-import { GMAIL_PLUGIN_ON } from '@/modules/gmail/domain/constants';
 import { useStorage } from '@/shared/composables/use-storage';
+
+export const GMAIL_PLUGIN_ON = 'gmail-plugin-on';
 
 export const useEnableGmail = () => {
   const isGmailEnable = useStorage(GMAIL_PLUGIN_ON, false);

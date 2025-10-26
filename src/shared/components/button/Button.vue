@@ -47,6 +47,7 @@ const props = defineProps<{
 
 <template>
   <button
+    type="button"
     :class="
       cn(
         variants({

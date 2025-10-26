@@ -33,7 +33,7 @@ function createWidgetWindow() {
   const { width: screenWidth, height: screenHeight } =
     screen.getPrimaryDisplay().bounds;
 
-  const initialWidgetWidth = isDev() ? 500 * 2 : 500;
+  const initialWidgetWidth = isDev() ? 500 * 2.5 : 500;
   const initialWidgetHeight = 30;
   const activeWidgetHeight = screenHeight / 2 + 300;
   const marginRight = 10;
@@ -54,6 +54,7 @@ function createWidgetWindow() {
     resizable: true,
     y: screenHeight - initialWidgetHeight - marginBottom,
     x: screenWidth - initialWidgetWidth - marginRight,
+    minWidth: 500,
     webPreferences: {
       preload: resolvePreloadPath(),
     },

@@ -5,8 +5,11 @@ import GmailThread from '@/modules/gmail/components/thread/GmailThread.vue';
 import { useGoogleAuth } from '@/modules/gmail/composables/use-google-auth';
 import { useEnableGmail } from '@/modules/gmail/composables/use-enable-gmail';
 import { useGetGmailThreads } from '@/modules/gmail/composables/use-get-gmail-threads';
+import { usePriorityEmailsStore } from '@/modules/gmail/composables/use-priority-emails-store';
 
 const { isGmailEnable } = useEnableGmail();
+
+usePriorityEmailsStore();
 
 const { executeGetGoogleAuth } = useGoogleAuth({
   immediate: false,
