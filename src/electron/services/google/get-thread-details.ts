@@ -83,9 +83,20 @@ function formatMessages(threadMessages: GmailMessage[]) {
     const headers = msg.payload?.headers || [];
     const subject = headers.find(h => h.name === 'Subject')?.value || '';
     const from = headers.find(h => h.name === 'From')?.value || '';
+
     const date = new Date(
       headers.find(h => h.name === 'Date')?.value || ''
-    ).toLocaleString();
+    ).toLocaleString(undefined, {
+      weekday: 'short',
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true,
+    });
+
     const body = extractPlainText(msg.payload);
 
     return {

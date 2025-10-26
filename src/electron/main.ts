@@ -18,26 +18,26 @@ protocol.registerSchemesAsPrivileged([
 ]);
 
 app.whenReady().then(() => {
-  if (!isDev()) {
-    app.dock?.hide();
-  }
   const mainWindow = createWidgetWindow();
   exposeSlackApiMethods();
   exposeGoogleApiMethods();
   exposeStore();
-  setupAutoUpdater(mainWindow);
-  setOpenAtLogin();
+  if (!isDev()) {
+    app.dock?.hide();
+    setOpenAtLogin();
+    setupAutoUpdater(mainWindow);
+  }
 });
 
 function createWidgetWindow() {
   const { width: screenWidth, height: screenHeight } =
     screen.getPrimaryDisplay().bounds;
 
-  const initialWidgetWidth = 500;
+  const initialWidgetWidth = isDev() ? 500 * 2 : 500;
   const initialWidgetHeight = 30;
   const activeWidgetHeight = screenHeight / 2 + 300;
-  const paddingRight = 10;
-  const paddingBottom = 0;
+  const marginRight = 10;
+  const marginBottom = isDev() ? 10 : 0;
   const activeOpacity = 1;
   const opacity = 0.3;
 
@@ -52,8 +52,8 @@ function createWidgetWindow() {
     opacity: opacity,
     movable: false,
     resizable: true,
-    y: screenHeight - initialWidgetHeight - paddingBottom,
-    x: screenWidth - initialWidgetWidth - paddingRight,
+    y: screenHeight - initialWidgetHeight - marginBottom,
+    x: screenWidth - initialWidgetWidth - marginRight,
     webPreferences: {
       preload: resolvePreloadPath(),
     },
@@ -70,8 +70,8 @@ function createWidgetWindow() {
       mainWindow,
       { width: initialWidgetWidth, height: activeWidgetHeight },
       {
-        x: screenWidth - initialWidgetWidth - paddingRight,
-        y: screenHeight - activeWidgetHeight - paddingBottom,
+        x: screenWidth - initialWidgetWidth - marginRight,
+        y: screenHeight - activeWidgetHeight - marginBottom,
       },
       activeOpacity
     );
@@ -82,8 +82,8 @@ function createWidgetWindow() {
       mainWindow,
       { width: initialWidgetWidth, height: initialWidgetHeight },
       {
-        x: screenWidth - initialWidgetWidth - paddingRight,
-        y: screenHeight - initialWidgetHeight - paddingBottom,
+        x: screenWidth - initialWidgetWidth - marginRight,
+        y: screenHeight - initialWidgetHeight - marginBottom,
       },
       opacity
     );

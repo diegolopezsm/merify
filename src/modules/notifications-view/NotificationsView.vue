@@ -55,7 +55,15 @@ watch(threadsError, newVal => {
     <template v-else>
       <p v-if="isThreadsLoading">Loading threads...</p>
       <p v-if="threadsError">Error loading threads: {{ threadsError }}</p>
-      <p v-if="threadsResponse?.threads?.length === 0">No threads found</p>
+      <p
+        v-if="
+          !isThreadsLoading &&
+          !threadsError &&
+          threadsResponse?.threads?.length === 0
+        "
+      >
+        No threads found
+      </p>
       <div v-if="threadsResponse" class="flex flex-col gap-5">
         <GmailThread
           v-for="thread in threadsResponse.threads"

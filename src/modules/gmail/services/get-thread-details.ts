@@ -21,6 +21,7 @@ interface GmailThreadDetailsResponse {
   lastMessageDate: string;
   firstMessageDate: string;
 }
+
 const getThreadDetailsService = async (
   threadId: string,
   params: ThreadDetailsParams = {}
