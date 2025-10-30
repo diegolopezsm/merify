@@ -16,10 +16,12 @@
     "transpile:electron": "tsc -p src/electron/tsconfig.json",
     "clean": "rm -rf dist && rm -rf dist-ui && rm -rf release",
     "clean:cache": "rm -rf ~/Library/Application\\ Support/Merify && rm -rf ~/Library/Preferences/com.merify.app.plist && rm -rf ~/Library/Logs/Merify && rm -rf ~/Library/Caches/Merify",
-    "build:mac": "npm run transpile:electron && npm run build && electron-builder --mac --arm64",
+    "build:mac:arm64": "npm run transpile:electron && npm run build && electron-builder --mac --arm64",
+    "build:mac:x64": "npm run transpile:electron && npm run build && electron-builder --mac --x64",
+    "build:mac:both": "npm run transpile:electron && npm run build && electron-builder --mac --arm64 --x64",
     "build:win": "npm run transpile:electron && npm run build && electron-builder --win --x64",
     "build:linux": "npm run transpile:electron && npm run build && electron-builder --linux --x64",
-    "release": "npm run clean && npm run build:mac && cross-env $(cat .env | xargs) electron-builder --mac --publish always",
+    "release": "npm run clean && npm run transpile:electron && npm run build && cross-env $(cat .env | xargs) electron-builder --mac --arm64 --x64 --publish always",
     "change-add": "npx @changesets/cli",
     "change-apply": "npx @changesets/cli version",
     "lint": "eslint . --ext .vue,.js,.ts,.jsx,.tsx",
@@ -46,14 +48,14 @@
         "dmg"
       ],
       "category": "public.app-category.productivity",
-      "artifactName": "${productName}-${version}-mac.${ext}"
+      "artifactName": "${productName}-${version}-mac-${arch}.${ext}"
     },
     "win": {
       "target": [
         "nsis",
         "zip"
       ],
-      "artifactName": "${productName}-${version}-win.${ext}"
+      "artifactName": "${productName}-${version}-win-${arch}.${ext}"
     },
     "publish": [
       {
