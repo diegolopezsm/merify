@@ -1,4 +1,5 @@
-import { fetchWithToken } from './fetch-with-token.js';
+import { fetchWithToken } from '../google/fetch-with-token.js';
+import type { GmailMessage } from '../../../shared/domain/thread.js';
 
 const GMAIL_THREAD_DETAILS_URL =
   'https://gmail.googleapis.com/gmail/v1/users/me/threads';
@@ -6,45 +7,6 @@ const GMAIL_THREAD_DETAILS_URL =
 interface ThreadDetailsParams {
   format?: 'minimal' | 'full' | 'raw' | 'metadata';
   metadataHeaders?: string[];
-}
-
-interface GmailMessagePayloadHeader {
-  name: string;
-  value: string;
-}
-interface GmailMessagePayloadPart {
-  partId: string;
-  mimeType: string;
-  filename: string;
-  headers: GmailMessagePayloadHeader[];
-  body: {
-    data?: string;
-    size: number;
-  };
-}
-
-interface GmailMessagePayload {
-  partId: string;
-  mimeType: string;
-  filename: string;
-  headers: GmailMessagePayloadHeader[];
-  body: {
-    attachmentId?: string;
-    size: number;
-    data?: string;
-  };
-  parts: GmailMessagePayloadPart[];
-}
-interface GmailMessage {
-  id: string;
-  threadId: string;
-  labelIds: string[];
-  snippet: string;
-  historyId: string;
-  internalDate: string;
-  payload: GmailMessagePayload;
-  sizeEstimate: number;
-  raw: string;
 }
 
 interface GmailThreadDetailsResponse {

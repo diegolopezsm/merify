@@ -1,6 +1,6 @@
 import { useAsyncState } from '@/shared/composables/use-async-state';
-import { getGoogleAuth as getGoogleAuthService } from '@/modules/gmail/services/get-google-auth';
-import { initGoogleAuth as initGoogleAuthService } from '@/modules/gmail/services/init-google-auth';
+import { getGoogleAuth as getGoogleAuthService } from '@/shared/services/get-google-auth';
+import { initGoogleAuth as initGoogleAuthService } from '@/shared/services/init-google-auth';
 
 type Options = {
   immediate?: boolean;

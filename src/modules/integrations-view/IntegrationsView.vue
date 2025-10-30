@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // import ActiveSlack from '@/modules/slack/components/SlackActivation.vue';
-import ActiveGmail from '@/modules/gmail/components/GmailActivation.vue';
+import GmailActivation from '@/modules/gmail/components/GmailActivation.vue';
+import GcalendarActivation from '@/modules/gcalendar/components/GcalendarActivation.vue';
 </script>
 
 <template>
@@ -9,9 +10,10 @@ import ActiveGmail from '@/modules/gmail/components/GmailActivation.vue';
     <p class="text-sm text-muted-foreground mb-4">
       Connect your accounts to receive notifications
     </p>
-    <div class="flex flex-wrap gap-3 w-full">
+    <div class="flex flex-wrap gap-4 w-full">
       <!-- <ActiveSlack /> -->
-      <ActiveGmail />
+      <GmailActivation />
+      <GcalendarActivation />
     </div>
   </div>
 </template>

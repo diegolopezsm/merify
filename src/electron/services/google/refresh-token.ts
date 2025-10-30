@@ -53,9 +53,19 @@ export const refreshToken = async (): Promise<RefreshTokenResponse> => {
       throw new Error(data.error);
     }
     setInStore(GOOGLE_TOKEN, data.access_token);
+    if (data.refresh_token) {
+      setInStore(GOOGLE_REFRESH_TOKEN, data.refresh_token);
+    }
+    // calculateExpirationDate(data.expires_in ?? 0);
     return data;
   } catch (error) {
     console.error('Error refreshing token:', error);
     throw error;
   }
 };
+
+// function calculateExpirationDate(expires_in: number) {
+//   const expirationDate = new Date();
+//   expirationDate.setSeconds(expirationDate.getSeconds() + expires_in);
+//   setInStore(GOOGLE_TOKEN_EXPIRATION, expirationDate.getTime());
+// }

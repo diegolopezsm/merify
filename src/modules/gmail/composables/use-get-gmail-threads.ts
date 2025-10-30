@@ -3,7 +3,10 @@ import { useAsyncState } from '@/shared/composables/use-async-state';
 import { usePriorityEmailsStore } from './use-priority-emails-store';
 import type { ThreadsListParams } from '@/modules/gmail/domain/threads';
 
-export const useGetGmailThreads = (params?: ThreadsListParams) => {
+export const useGetGmailThreads = (
+  params?: ThreadsListParams,
+  { onSuccess }: { onSuccess?: () => void } = {}
+) => {
   const { primaryEmails, customEmails } = usePriorityEmailsStore();
   const emailAddresses = [
     ...primaryEmails.value.map(email => `from:${email}`),
@@ -25,6 +28,7 @@ export const useGetGmailThreads = (params?: ThreadsListParams) => {
     { threads: [] },
     {
       immediate: false,
+      onSuccess,
     }
   );
 

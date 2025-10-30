@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import GmailLogo from '@/modules/gmail/components/GmailLogo.vue';
+import { useGoogleAuth } from '@/shared/composables/use-google-auth';
 import { Button, Card, Input, Toggle, Chip } from '@/shared/components';
-import { useGoogleAuth } from '@/modules/gmail/composables/use-google-auth';
 import { useEnableGmail } from '@/modules/gmail/composables/use-enable-gmail';
 import { usePriorityEmailsStore } from '@/modules/gmail/composables/use-priority-emails-store';
 

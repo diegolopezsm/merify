@@ -48,9 +48,7 @@ const setActiveView = (view: string) => {
           <span class="first-letter:uppercase">{{ tab.label }}</span>
         </Button>
       </div>
-      <KeepAlive>
-        <Component :is="views[activeView as keyof typeof views]" />
-      </KeepAlive>
+      <Component :is="views[activeView as keyof typeof views]" />
     </div>
   </div>
 </template>

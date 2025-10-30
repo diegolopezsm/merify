@@ -1,5 +1,5 @@
-import { safeRequest } from '../../../shared/utils/safe-request.js';
 import { refreshToken } from './refresh-token.js';
+import { safeRequest } from '../../../shared/utils/safe-request.js';
 
 /**
  * Generic retry mechanism with automatic token refresh for Google API calls
@@ -19,9 +19,13 @@ export const refreshTokenWithRetryFetch = async <T>(
       console.log('Token expired, attempting refresh...');
 
       // Try to refresh the token
-      const refreshResult = await refreshToken();
-      if (refreshResult.error) {
-        throw new Error(`Token refresh failed: ${refreshResult.error}`);
+      const [refreshResult, errorResponse] = await safeRequest(
+        async () => await refreshToken()
+      );
+      if (refreshResult?.error || errorResponse) {
+        throw new Error(
+          `Token refresh failed: ${refreshResult?.error || errorResponse}`
+        );
       }
 
       // Retry with refreshed token

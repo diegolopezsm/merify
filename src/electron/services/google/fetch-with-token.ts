@@ -26,13 +26,15 @@ export const fetchWithToken = async <T>({
   body,
   headers = {},
 }: FetchWithTokenOptions): Promise<T> => {
-  const token = getFromStore(GOOGLE_TOKEN) as string;
-
-  if (!token) {
+  if (!getFromStore(GOOGLE_TOKEN)) {
     throw new Error('No Google access token available');
   }
-
   const fetchApiCall = async (): Promise<T> => {
+    const token = getFromStore(GOOGLE_TOKEN) as string;
+
+    if (!token) {
+      throw new Error('No Google access token available');
+    }
     // Build URL with query parameters
     // eslint-disable-next-line no-undef
     const searchParams = new URLSearchParams();

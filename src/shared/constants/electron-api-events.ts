@@ -15,3 +15,9 @@ export const GOOGLE_GET_THREADS = 'google:get-threads';
 export const GOOGLE_GET_THREAD_DETAILS = 'google:get-thread-details';
 export const GOOGLE_SEND_THREAD_TO_TRASH = 'google:send-thread-to-trash';
 export const GOOGLE_MARK_THREAD_AS_READ = 'google:mark-thread-as-read';
+export const GOOGLE_ON_GMAIL_EVENT = 'google:on-gmail-event';
+export const GOOGLE_ON_GMAIL_EVENT_ERROR = 'google:on-gmail-event-error';
+export const GOOGLE_INIT_GMAIL_EVENTS_SUBSCRIPTION =
+  'google:init-gmail-events-subscription';
+
+export const OPEN_MAIN_WINDOW = 'open-main-window';

@@ -7,7 +7,7 @@ const GOOGLE_USERINFO_URL = 'https://www.googleapis.com/oauth2/v2/userinfo';
  * Automatically handles token refresh if the current token is expired
  * @returns The response from the API
  */
-export const getAuth = async () => {
+export const getGoogleAuth = async () => {
   return fetchWithToken({
     url: GOOGLE_USERINFO_URL,
     operationName: 'get user info',

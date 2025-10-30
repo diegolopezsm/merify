@@ -17,9 +17,12 @@ interface GmailMessage {
 interface GmailThreadDetailsResponse {
   historyId: string;
   id: string;
-  messages: GmailMessage[];
+  subject: string;
+  snippet: string;
+  from: string;
   lastMessageDate: string;
   firstMessageDate: string;
+  messages: GmailMessage[];
 }
 
 const getThreadDetailsService = async (
@@ -38,9 +41,14 @@ export const getThreadDetails = async (
   params: ThreadDetailsParams = {}
 ): Promise<GmailThreadDetailsResponse> => {
   const response = await getThreadDetailsService(threadId, params);
+  const firstMessage = response.messages.at(0);
+  const lastMessage = response.messages.at(-1);
   return {
     ...response,
-    lastMessageDate: response.messages.at(-1)?.date || '',
-    firstMessageDate: response.messages.at(0)?.date || '',
+    from: firstMessage?.from || '',
+    subject: firstMessage?.subject || '',
+    snippet: firstMessage?.snippet || '',
+    firstMessageDate: firstMessage?.date || '',
+    lastMessageDate: lastMessage?.date || '',
   };
 };

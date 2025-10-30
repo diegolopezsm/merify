@@ -1,4 +1,4 @@
-import { fetchWithToken } from './fetch-with-token.js';
+import { fetchWithToken } from '../google/fetch-with-token.js';
 
 const GMAIL_THREAD_TO_TRASH_URL = (threadId: string) =>
   `https://gmail.googleapis.com/gmail/v1/users/me/threads/${threadId}/trash`;

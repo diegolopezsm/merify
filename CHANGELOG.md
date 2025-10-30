@@ -1,121 +1,15 @@
 # Merify
 
-## 1.0.0
+## 0.9.0
 
 ### Major Changes
 
-- First MVP
+#### First MVP
+
+Gmail integration
+
+- User can add gmail auth
 - User can list unread gmail threads
+- There is a default priority emails list. only threads from these emails are listed
+- User can add custom emails addresses
 - Thread can be mark as read and deleted
-
-## 0.16.1
-
-### Patch Changes
-
-- Only get thread details if is visible on screen
-
-## 0.16.0
-
-### Minor Changes
-
-- Now user can mark thread as read
-- Now user can delete threads
-
-## 0.15.0
-
-### Minor Changes
-
-- Add haibility to delete thread
-
-## 0.14.0
-
-### Minor Changes
-
-- Show gmail threads list
-
-## 0.13.0
-
-### Minor Changes
-
-- Add eslint and prettier
-
-## 0.12.0
-
-### Minor Changes
-
-- Add Google API Integration
-
-## 0.11.1
-
-### Patch Changes
-
-- Remove hardcoded api key
-
-## 0.11.0
-
-### Minor Changes
-
-- Add slack enable/disable integration
-
-## 0.10.0
-
-### Minor Changes
-
-- Add Slack auth activation
-
-## 0.9.0
-
-### Minor Changes
-
-- Refactor slack api use
-
-## 0.8.0
-
-### Minor Changes
-
-- Add .env build config
-
-## 0.7.0
-
-### Minor Changes
-
-- Add store management methods
-- Encrypt store data
-
-## 0.6.0
-
-### Minor Changes
-
-- Add togle component
-
-## 0.5.0
-
-### Minor Changes
-
-- Add Electron configuration to make app windown peristent and always top on screen
-- Screen can auto resize when focus to show content
-- Screen can hide when blur
-
-## 0.4.0
-
-### Minor Changes
-
-- Add Tabs main view mocks
-
-## 0.3.0
-
-### Minor Changes
-
-- Configure envs & auto reload when electron files change
-
-## 0.2.0
-
-### Minor Changes
-
-- Add BellIcon & PlugIcon
-
-## 0.1.0
-
-### Minor Changes
-
-- Configure app style

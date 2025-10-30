@@ -1,10 +1,12 @@
 import path from 'path';
-import { resolvePreloadPath } from './path-resolver.js';
 import { setupAutoUpdater } from './update-manager.js';
+import { resolvePreloadPath } from './path-resolver.js';
 import { exposeStore } from './services/db/expose-store.js';
-import { app, BrowserWindow, protocol, screen } from 'electron';
 import { animateWindowTransition, initEnv, isDev } from './util.js';
+import { app, BrowserWindow, ipcMain, protocol, screen } from 'electron';
+import { OPEN_MAIN_WINDOW } from '../shared/constants/electron-api-events.js';
 import { exposeSlackApiMethods } from './services/slack/expose-slack-api-methods.js';
+import { exposeGmailApiMethods } from './services/gmail/expose-gmail-api-methods.js';
 import { exposeGoogleApiMethods } from './services/google/expose-google-api-methods.js';
 
 initEnv();
@@ -18,10 +20,13 @@ protocol.registerSchemesAsPrivileged([
 ]);
 
 app.whenReady().then(() => {
+  app.setAppUserModelId(isDev() ? 'com.merify.dev' : 'com.merify.app');
   const mainWindow = createWidgetWindow();
   exposeSlackApiMethods();
   exposeGoogleApiMethods();
+  exposeGmailApiMethods(mainWindow);
   exposeStore();
+  app.commandLine.appendSwitch('disable-background-timer-throttling');
   if (!isDev()) {
     app.dock?.hide();
     setOpenAtLogin();
@@ -33,13 +38,13 @@ function createWidgetWindow() {
   const { width: screenWidth, height: screenHeight } =
     screen.getPrimaryDisplay().bounds;
 
-  const initialWidgetWidth = isDev() ? 500 * 2.5 : 500;
+  const initialWidgetWidth = 500;
   const initialWidgetHeight = 30;
   const activeWidgetHeight = screenHeight / 2 + 300;
   const marginRight = 10;
-  const marginBottom = isDev() ? 10 : 0;
+  const marginBottom = 5;
   const activeOpacity = 1;
-  const opacity = 0.3;
+  const opacity = 0.2;
 
   const mainWindow = new BrowserWindow({
     width: initialWidgetWidth,
@@ -52,21 +57,22 @@ function createWidgetWindow() {
     opacity: opacity,
     movable: false,
     resizable: true,
+    hasShadow: true,
     y: screenHeight - initialWidgetHeight - marginBottom,
     x: screenWidth - initialWidgetWidth - marginRight,
-    minWidth: 500,
+    minWidth: initialWidgetWidth,
     webPreferences: {
       preload: resolvePreloadPath(),
     },
   });
   if (isDev()) {
     mainWindow.loadURL('http://localhost:5173');
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
   } else {
     mainWindow.loadFile(path.join(app.getAppPath(), '/dist-ui/index.html'));
   }
 
-  mainWindow.on('focus', () => {
+  function openWindow() {
     animateWindowTransition(
       mainWindow,
       { width: initialWidgetWidth, height: activeWidgetHeight },
@@ -76,6 +82,13 @@ function createWidgetWindow() {
       },
       activeOpacity
     );
+  }
+
+  ipcMain.handle(OPEN_MAIN_WINDOW, () => {
+    openWindow();
+  });
+  mainWindow.on('focus', () => {
+    openWindow();
   });
 
   mainWindow.on('blur', () => {

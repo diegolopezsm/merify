@@ -1,30 +1,23 @@
 <script setup lang="ts">
 import { watch } from 'vue';
 import { BannerAlert } from '@/shared/components';
+import { useGmailStore } from '@/modules/gmail/store/gmail-store';
+import { useGoogleAuth } from '@/shared/composables/use-google-auth';
 import GmailThread from '@/modules/gmail/components/thread/GmailThread.vue';
-import { useGoogleAuth } from '@/modules/gmail/composables/use-google-auth';
 import { useEnableGmail } from '@/modules/gmail/composables/use-enable-gmail';
-import { useGetGmailThreads } from '@/modules/gmail/composables/use-get-gmail-threads';
-import { usePriorityEmailsStore } from '@/modules/gmail/composables/use-priority-emails-store';
 
 const { isGmailEnable } = useEnableGmail();
-
-usePriorityEmailsStore();
 
 const { executeGetGoogleAuth } = useGoogleAuth({
   immediate: false,
 });
 
-const {
-  threadsResponse,
-  isLoading: isThreadsLoading,
-  executeGetThreads,
-  error: threadsError,
-} = useGetGmailThreads();
+const { threads, isThreadsLoading, threadsError, getAndSetThreads } =
+  useGmailStore();
 
 const initGmailThreads = async () => {
   await executeGetGoogleAuth();
-  await executeGetThreads();
+  await getAndSetThreads();
 };
 
 watch(
@@ -40,8 +33,8 @@ watch(
 watch(threadsError, newVal => {
   if (newVal) {
     window.setTimeout(() => {
-      executeGetThreads();
-    }, 3000);
+      getAndSetThreads();
+    }, 2000);
   }
 });
 </script>
@@ -56,24 +49,18 @@ watch(threadsError, newVal => {
       Please enable at least one integration to receive notifications.
     </BannerAlert>
     <template v-else>
-      <p v-if="isThreadsLoading">Loading threads...</p>
-      <p v-if="threadsError">Error loading threads: {{ threadsError }}</p>
-      <p
-        v-if="
-          !isThreadsLoading &&
-          !threadsError &&
-          threadsResponse?.threads?.length === 0
-        "
-      >
-        No threads found
-      </p>
-      <div v-if="threadsResponse" class="flex flex-col gap-5">
+      <div v-if="threads?.length > 0" class="flex flex-col gap-5">
         <GmailThread
-          v-for="thread in threadsResponse.threads"
+          v-for="thread in threads"
           :key="thread.id"
           :thread="thread"
         />
       </div>
+      <p v-if="isThreadsLoading">Loading threads...</p>
+      <p v-if="threadsError">Error loading threads: {{ threadsError }}</p>
+      <p v-if="!isThreadsLoading && !threadsError && threads?.length === 0">
+        No threads found
+      </p>
     </template>
   </div>
 </template>
