@@ -1,6 +1,6 @@
 # Merify
 
-## 0.9.0
+## 0.9.0 - beta
 
 ### Major Changes
 
@@ -12,4 +12,5 @@ Gmail integration
 - User can list unread gmail threads
 - There is a default priority emails list. only threads from these emails are listed
 - User can add custom emails addresses
-- Thread can be mark as read and deleted
+- Thread can be mark as read
+- Real time email show
