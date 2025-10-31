@@ -1,7 +1,6 @@
-import fs from 'fs';
-import path from 'path';
+// import fs from 'fs';
+// import path from 'path';
 import log from 'electron-log';
-import { isDev } from './util.js';
 import pkg from 'electron-updater';
 import { app, BrowserWindow, dialog } from 'electron';
 
@@ -45,47 +44,40 @@ const updaterLog = {
 export function setupAutoUpdater(win: BrowserWindow) {
   // Configurar logger de autoUpdater usando electron-log
   autoUpdater.logger = log;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (autoUpdater.logger as any).transports.file.level = 'info';
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (autoUpdater.logger as any).transports.console.level = isDev()
-    ? 'debug'
-    : 'warn';
 
   // Descargar automáticamente cuando se encuentre una actualización
   autoUpdater.autoDownload = true;
   // Instalar automáticamente después de descargar (sin preguntar)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (autoUpdater as any).autoInstallOnAppQuit = true;
+  autoUpdater.autoInstallOnAppQuit = true;
+  autoUpdater.autoRunAppAfterInstall = true;
 
   // En modo dev, configurar updates para poder probar
   // electron-updater requiere un archivo dev-app-update.yml en la raíz para funcionar en dev
-  if (isDev() && !app.isPackaged) {
-    // Verificar que el archivo dev-app-update.yml existe
-    const devUpdateConfigPath = path.join(process.cwd(), 'dev-app-update.yml');
-    const devUpdateConfigExists = fs.existsSync(devUpdateConfigPath);
+  // if (isDev() && !app.isPackaged) {
+  //   // Verificar que el archivo dev-app-update.yml existe
+  //   const devUpdateConfigPath = path.join(process.cwd(), 'dev-app-update.yml');
+  //   const devUpdateConfigExists = fs.existsSync(devUpdateConfigPath);
 
-    updaterLog.info(`Buscando dev-app-update.yml en: ${devUpdateConfigPath}`);
-    updaterLog.info(`dev-app-update.yml existe: ${devUpdateConfigExists}`);
+  //   updaterLog.info(`Buscando dev-app-update.yml en: ${devUpdateConfigPath}`);
+  //   updaterLog.info(`dev-app-update.yml existe: ${devUpdateConfigExists}`);
 
-    if (devUpdateConfigExists) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (autoUpdater as any).forceDevUpdateConfig = true;
-      updaterLog.info('Modo desarrollo: forceDevUpdateConfig habilitado');
-    } else {
-      updaterLog.warn(
-        `dev-app-update.yml no encontrado en ${devUpdateConfigPath}. Actualizaciones en dev no funcionarán.`
-      );
-    }
-  }
+  //   if (devUpdateConfigExists) {
+  //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  //     (autoUpdater as any).forceDevUpdateConfig = true;
+  //     updaterLog.info('Modo desarrollo: forceDevUpdateConfig habilitado');
+  //   } else {
+  //     updaterLog.warn(
+  //       `dev-app-update.yml no encontrado en ${devUpdateConfigPath}. Actualizaciones en dev no funcionarán.`
+  //     );
+  //   }
+  // }
 
   // Configurar el feed URL explícitamente para GitHub
   // electron-updater debería detectar esto automáticamente desde los metadatos
   // del build si se usó --publish, pero lo configuramos explícitamente como fallback
   try {
     // En electron-updater v6.x, usamos setFeedURL con la configuración de GitHub
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (autoUpdater as any).setFeedURL({
+    autoUpdater.setFeedURL({
       provider: 'github',
       owner: 'diegolopezsm',
       repo: 'merify',
