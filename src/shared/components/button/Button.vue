@@ -6,6 +6,7 @@ const variants = cva('p-2 rounded-md cursor-pointer h-fit', {
   variants: {
     variant: {
       primary: 'bg-primary text-primary-foreground hover:bg-primary/80',
+      primaryText: 'text-primary hover:bg-primary/20',
       secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
       secondaryText: 'text-secondary hover:bg-secondary/20',
       destructive:

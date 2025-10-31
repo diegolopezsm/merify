@@ -1,6 +1,7 @@
-import { BrowserWindow } from 'electron';
+import { BrowserWindow, ipcMain, shell } from 'electron';
 import dotenv from 'dotenv';
 import path from 'path';
+import { OPEN_EXTERNAL_LINK } from '../shared/constants/electron-api-events.js';
 
 export const isDev = (): boolean => {
   return process.env.NODE_ENV === 'development';
@@ -78,4 +79,10 @@ export function animateWindowTransition(
   };
 
   animate();
+}
+
+export function exposeUtils() {
+  ipcMain.handle(OPEN_EXTERNAL_LINK, (_, url: string) => {
+    shell.openExternal(url);
+  });
 }

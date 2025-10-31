@@ -1,14 +1,19 @@
 import path from 'path';
+import {
+  animateWindowTransition,
+  exposeUtils,
+  initEnv,
+  isDev,
+} from './util.js';
+import log from 'electron-log';
 import { setupAutoUpdater } from './update-manager.js';
 import { resolvePreloadPath } from './path-resolver.js';
 import { exposeStore } from './services/db/expose-store.js';
-import { animateWindowTransition, initEnv, isDev } from './util.js';
 import { app, BrowserWindow, ipcMain, protocol, screen } from 'electron';
 import { OPEN_MAIN_WINDOW } from '../shared/constants/electron-api-events.js';
 import { exposeSlackApiMethods } from './services/slack/expose-slack-api-methods.js';
 import { exposeGmailApiMethods } from './services/gmail/expose-gmail-api-methods.js';
 import { exposeGoogleApiMethods } from './services/google/expose-google-api-methods.js';
-import log from 'electron-log';
 
 log.transports.file.level = isDev() ? 'debug' : 'info';
 log.transports.console.level = isDev() ? 'debug' : 'warn';
@@ -30,6 +35,7 @@ app.whenReady().then(() => {
   exposeGoogleApiMethods();
   exposeGmailApiMethods(mainWindow);
   exposeStore();
+  exposeUtils();
   app.commandLine.appendSwitch('disable-background-timer-throttling');
   if (!isDev()) {
     app.dock?.hide();

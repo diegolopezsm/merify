@@ -21,3 +21,4 @@ export const GOOGLE_INIT_GMAIL_EVENTS_SUBSCRIPTION =
   'google:init-gmail-events-subscription';
 
 export const OPEN_MAIN_WINDOW = 'open-main-window';
+export const OPEN_EXTERNAL_LINK = 'open-external-link';

@@ -2,7 +2,7 @@
 
 ### Run command to active after install
 
-APP_PATH="/Applications/Merify.app"    
+APP_PATH="/Applications/Merify.app"
 
 echo "🔧 Quitando restricciones de seguridad..."
 xattr -r -d com.apple.quarantine "$APP_PATH"

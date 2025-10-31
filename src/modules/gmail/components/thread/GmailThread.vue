@@ -7,8 +7,9 @@ import GmailLogo from '@/modules/gmail/components/GmailLogo.vue';
 import type { GmailThread } from '@/modules/gmail/domain/threads';
 import { useAsyncState } from '@/shared/composables/use-async-state';
 import MarkAsRead from '@/modules/gmail/components/thread/MarkAsRead.vue';
-// import DeleteThread from '@/modules/gmail/components/thread/DeleteThread.vue';
+import DeleteThread from '@/modules/gmail/components/thread/DeleteThread.vue';
 import { getThreadDetails } from '@/modules/gmail/services/get-thread-details';
+import OpenMailExternal from '@/modules/gmail/components/thread/OpenMailExternal.vue';
 import { useIntersectionObserver } from '@/shared/composables/use-intersection-observer';
 
 const props = defineProps<{
@@ -72,16 +73,21 @@ const hideThread = () => {
         </span>
       </div>
       <div class="space-x-4">
-        <MarkAsRead
+        <OpenMailExternal
           :thread="thread"
           class="t-button transition-all duration-500 ease-in-out rounded-b-none"
           @on-success="hideThread"
         />
-        <!-- <DeleteThread
+        <MarkAsRead
           :thread="thread"
-          class="t-button transition-all duration-500 ease-in-out delay-200 rounded-b-none"
+          class="t-button transition-all duration-500 ease-in-out rounded-b-none delay-200"
           @on-success="hideThread"
-        /> -->
+        />
+        <DeleteThread
+          :thread="thread"
+          class="t-button transition-all duration-500 ease-in-out delay-400 rounded-b-none"
+          @on-success="hideThread"
+        />
       </div>
     </div>
     <Card class="w-full min-h-12 rounded-t-none z-10" variant="outline">

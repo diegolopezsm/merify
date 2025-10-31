@@ -56,7 +56,7 @@ async function addGmailSubscription(window: BrowserWindow) {
       subscription = pubsub.subscription('merify-gmail-updates-sub');
 
       subscription.on('message', async message => {
-        console.log(`new message received: ${message.id}`);
+        // console.log(`new message received: ${message.id}`);
 
         if (!window || window.isDestroyed()) {
           message.ack(); // Asegurar que se ack incluso si la ventana está cerrada
