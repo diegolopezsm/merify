@@ -32,8 +32,8 @@ export const useGmailStore = createGlobalState(() => {
     const [response, errorResponse] = await safeRequest(async () =>
       getThreads({ ...defaultParams, ...params })
     );
+    error.value = null;
     if (errorResponse) {
-      console.error(errorResponse);
       error.value = errorResponse;
       isLoading.value = false;
       return;

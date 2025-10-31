@@ -1,18 +1,6 @@
 # Merify
 
-## 0.9.1
-
-### Patch Changes
-
-- add new primary email
-
-## 0.9.1
-
-### Patch Changes
-
-- Try fix envs in electron
-
-## 0.9.0 - beta
+## 0.1.0
 
 ### Major Changes
 

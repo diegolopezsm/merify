@@ -5,7 +5,7 @@ import pkg from 'electron-updater';
 import { app, BrowserWindow, dialog } from 'electron';
 
 const { autoUpdater } = pkg;
-
+let updateInterval: ReturnType<typeof setInterval> | null = null;
 // Configurar electron-log
 
 // Los logs se guardan en:
@@ -189,5 +189,10 @@ export function setupAutoUpdater(win: BrowserWindow) {
     });
   }
   setTimeout(checkForUpdates, 1000 * 5); // 5 segundos
-  setInterval(checkForUpdates, 1000 * 60 * 60); // 1 hora
+  if (updateInterval) {
+    // eslint-disable-next-line no-undef
+    clearInterval(updateInterval);
+    updateInterval = null;
+  }
+  updateInterval = setInterval(checkForUpdates, 1000 * 60 * 30); // 30 minutos
 }
