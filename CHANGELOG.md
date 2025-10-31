@@ -1,14 +1,6 @@
 # Merify
 
-## 0.2.0
-
-### Minor Changes
-
-- Open emails in browser
-
 ## 0.1.0
-
-### Major Changes
 
 #### First MVP
 
