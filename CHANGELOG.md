@@ -4,6 +4,12 @@
 
 ### Patch Changes
 
+- add new primary email
+
+## 0.9.1
+
+### Patch Changes
+
 - Try fix envs in electron
 
 ## 0.9.0 - beta
