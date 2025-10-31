@@ -3,7 +3,7 @@
   "description": "Merify is a tool that helps you manage important notifications.",
   "author": "Diego Lopez",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "main": "dist/electron/main.js",
   "scripts": {
