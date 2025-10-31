@@ -1,13 +1,10 @@
 import { app, shell } from 'electron';
-import { initEnv } from '../../util.js';
 import { setInStore } from '../db/store.js';
 import {
   GOOGLE_TOKEN,
   GOOGLE_REFRESH_TOKEN,
 } from '../../../shared/constants/store-keys.js';
 import { API_BASE_URL } from '../../../shared/constants/enpoints.js';
-
-initEnv();
 
 export const initGoogleAuth = () => {
   shell.openExternal(`${API_BASE_URL}/google/auth/start`);

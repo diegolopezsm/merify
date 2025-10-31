@@ -1,15 +1,14 @@
-import { app, BrowserWindow, dialog } from 'electron';
-import pkg from 'electron-updater';
+import fs from 'fs';
+import path from 'path';
 import log from 'electron-log';
 import { isDev } from './util.js';
-import path from 'path';
-import fs from 'fs';
+import pkg from 'electron-updater';
+import { app, BrowserWindow, dialog } from 'electron';
 
 const { autoUpdater } = pkg;
 
 // Configurar electron-log
-log.transports.file.level = 'info';
-log.transports.console.level = 'debug';
+
 // Los logs se guardan en:
 // macOS: ~/Library/Logs/Merify/main.log
 // Windows: %USERPROFILE%\AppData\Roaming\Merify\logs\main.log
@@ -143,14 +142,14 @@ export function setupAutoUpdater(win: BrowserWindow) {
     updaterLog.error('Error en el autoUpdater', err);
 
     // Mostrar diálogo de error al usuario solo en producción
-    if (!isDev()) {
-      dialog.showMessageBoxSync(win, {
-        type: 'error',
-        title: 'Update Error',
-        message: 'Failed to check for updates',
-        detail: err.message,
-      });
-    }
+    // if (!isDev()) {
+    //   dialog.showMessageBoxSync(win, {
+    //     type: 'error',
+    //     title: 'Update Error',
+    //     message: 'Failed to check for updates',
+    //     detail: err.message,
+    //   });
+    // }
   });
 
   // Evento: Progreso de descarga
@@ -170,7 +169,7 @@ export function setupAutoUpdater(win: BrowserWindow) {
     // Si el usuario elige "Más tarde", se instalará automáticamente al cerrar la app
     const choice = dialog.showMessageBoxSync(win, {
       type: 'info',
-      buttons: ['Install and restart now'],
+      buttons: ['Instalar y reiniciar ahora'],
       title: 'Actualización lista',
       message: 'La actualización está lista para instalar',
       detail: `Versión ${info.version} descargada. Puedes instalar ahora.`,
@@ -190,11 +189,13 @@ export function setupAutoUpdater(win: BrowserWindow) {
     }
   });
 
-  // Iniciar verificación de actualizaciones después de 5 segundos
-  setTimeout(() => {
+  // Iniciar verificación de actualizaciones
+  function checkForUpdates() {
     updaterLog.info('Iniciando verificación de actualizaciones...');
     autoUpdater.checkForUpdates().catch(err => {
       updaterLog.error('Error al verificar actualizaciones', err);
     });
-  }, 1000 * 5);
+  }
+  setTimeout(checkForUpdates, 1000 * 5); // 5 segundos
+  setInterval(checkForUpdates, 1000 * 60 * 60); // 1 hora
 }

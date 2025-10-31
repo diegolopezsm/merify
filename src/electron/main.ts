@@ -8,6 +8,10 @@ import { OPEN_MAIN_WINDOW } from '../shared/constants/electron-api-events.js';
 import { exposeSlackApiMethods } from './services/slack/expose-slack-api-methods.js';
 import { exposeGmailApiMethods } from './services/gmail/expose-gmail-api-methods.js';
 import { exposeGoogleApiMethods } from './services/google/expose-google-api-methods.js';
+import log from 'electron-log';
+
+log.transports.file.level = isDev() ? 'debug' : 'info';
+log.transports.console.level = isDev() ? 'debug' : 'warn';
 
 initEnv();
 

@@ -1,23 +1,39 @@
 {
-  "appId": "com.merify.app",
-  "icon": "merify-logo.png",
-  "files": ["dist", "dist-ui"],
-  "extraResources": [
-    "dist/preload.cjs", 
-    "src/assets/**",
-    {
-      "from": ".env.production",
-      "to": ".env.production"
-    }
-  ],
-  "mac": {
-    "target": "dmg"
-  },
-  "win": {
-    "target": ["portable", "msi"]
-  },
-  "linux": {
-    "target": ["AppImage", "deb", "rpm", "snap", "tar.gz"],
-    "category": "Utility"
+    "appId": "com.merify.app",
+    "productName": "Merify",
+    "icon": "merify-logo.png",
+    "files": [
+      "dist",
+      "dist-ui",
+      "package.json"
+    ],
+    "extraResources": [
+      "dist/preload.cjs",
+      "src/assets/**"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "category": "public.app-category.productivity",
+      "artifactName": "${productName}-${version}-mac-${arch}.${ext}"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "zip"
+      ],
+      "artifactName": "${productName}-${version}-win-${arch}.${ext}"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "diegolopezsm",
+        "repo": "merify",
+        "releaseType": "release"
+      }
+    ]
   }
-}

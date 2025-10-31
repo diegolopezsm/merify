@@ -31,41 +31,6 @@
     "type-check": "vue-tsc --noEmit",
     "prepare": "husky"
   },
-  "build": {
-    "appId": "com.merify.app",
-    "productName": "Merify",
-    "icon": "merify-logo.png",
-    "files": [
-      "dist",
-      "dist-ui",
-      "package.json"
-    ],
-    "directories": {
-      "output": "release"
-    },
-    "mac": {
-      "target": [
-        "dmg"
-      ],
-      "category": "public.app-category.productivity",
-      "artifactName": "${productName}-${version}-mac-${arch}.${ext}"
-    },
-    "win": {
-      "target": [
-        "nsis",
-        "zip"
-      ],
-      "artifactName": "${productName}-${version}-win-${arch}.${ext}"
-    },
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "diegolopezsm",
-        "repo": "merify",
-        "releaseType": "release"
-      }
-    ]
-  },
   "dependencies": {
     "@google-cloud/pubsub": "^5.2.0",
     "@google/genai": "^1.20.0",

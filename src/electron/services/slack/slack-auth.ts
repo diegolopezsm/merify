@@ -1,9 +1,6 @@
 import { app, BrowserWindow } from 'electron';
-import { initEnv } from '../../util.js';
 import { setInStore } from '../db/store.js';
 import { SLACK_TOKEN } from '../../../shared/constants/store-keys.js';
-
-initEnv();
 
 const clientId = process.env.SLACK_CLIENT_ID || '';
 const scope = [
