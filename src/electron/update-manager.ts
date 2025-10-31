@@ -50,7 +50,7 @@ export function setupAutoUpdater(win: BrowserWindow) {
   // Instalar automáticamente después de descargar (sin preguntar)
   autoUpdater.autoInstallOnAppQuit = true;
   autoUpdater.autoRunAppAfterInstall = true;
-  // autoUpdater.forceDevUpdateConfig = true;
+  autoUpdater.forceDevUpdateConfig = true; // TODO: Remove this for real release
 
   // En modo dev, configurar updates para poder probar
   // electron-updater requiere un archivo dev-app-update.yml en la raíz para funcionar en dev
