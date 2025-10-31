@@ -1,53 +1,200 @@
-import { BrowserWindow, dialog } from 'electron';
+import { app, BrowserWindow, dialog } from 'electron';
 import pkg from 'electron-updater';
+import log from 'electron-log';
+import { isDev } from './util.js';
+import path from 'path';
+import fs from 'fs';
+
 const { autoUpdater } = pkg;
 
+// Configurar electron-log
+log.transports.file.level = 'info';
+log.transports.console.level = 'debug';
+// Los logs se guardan en:
+// macOS: ~/Library/Logs/Merify/main.log
+// Windows: %USERPROFILE%\AppData\Roaming\Merify\logs\main.log
+// Linux: ~/.config/Merify/logs/main.log
+
+// Función helper para logging que escribe tanto a consola como a archivo
+const updaterLog = {
+  info: (message: string) => {
+    const logMessage = `[Updater Info] ${message}`;
+    console.log(logMessage);
+    log.info(logMessage);
+  },
+  warn: (message: string) => {
+    const logMessage = `[Updater Warn] ${message}`;
+    console.warn(logMessage);
+    log.warn(logMessage);
+  },
+  error: (message: string, err?: Error) => {
+    const logMessage = `[Updater Error] ${message}`;
+    console.error(logMessage, err);
+    if (err) {
+      log.error(logMessage, err);
+    } else {
+      log.error(logMessage);
+    }
+  },
+  debug: (message: string) => {
+    const logMessage = `[Updater Debug] ${message}`;
+    console.log(logMessage);
+    log.debug(logMessage);
+  },
+};
+
 export function setupAutoUpdater(win: BrowserWindow) {
-  // No descargar automáticamente
-  autoUpdater.autoDownload = false;
+  // Configurar logger de autoUpdater usando electron-log
+  autoUpdater.logger = log;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (autoUpdater.logger as any).transports.file.level = 'info';
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (autoUpdater.logger as any).transports.console.level = isDev()
+    ? 'debug'
+    : 'warn';
 
-  // Mostrar logs en consola (opcional)
-  //   import log from 'electron-log';
-  //   autoUpdater.logger = log;
-  //   (autoUpdater.logger as any).transports.file.level = 'info';
+  // Descargar automáticamente cuando se encuentre una actualización
+  autoUpdater.autoDownload = true;
+  // Instalar automáticamente después de descargar (sin preguntar)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (autoUpdater as any).autoInstallOnAppQuit = true;
 
-  autoUpdater.on('update-available', info => {
-    const choice = dialog.showMessageBoxSync(win, {
-      type: 'info',
-      buttons: ['Update', 'Cancel'],
-      title: 'New version available',
-      message: `A new version (${info.version}) is available. Do you want to download it now?`,
+  // En modo dev, configurar updates para poder probar
+  // electron-updater requiere un archivo dev-app-update.yml en la raíz para funcionar en dev
+  if (isDev() && !app.isPackaged) {
+    // Verificar que el archivo dev-app-update.yml existe
+    const devUpdateConfigPath = path.join(process.cwd(), 'dev-app-update.yml');
+    const devUpdateConfigExists = fs.existsSync(devUpdateConfigPath);
+
+    updaterLog.info(`Buscando dev-app-update.yml en: ${devUpdateConfigPath}`);
+    updaterLog.info(`dev-app-update.yml existe: ${devUpdateConfigExists}`);
+
+    if (devUpdateConfigExists) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (autoUpdater as any).forceDevUpdateConfig = true;
+      updaterLog.info('Modo desarrollo: forceDevUpdateConfig habilitado');
+    } else {
+      updaterLog.warn(
+        `dev-app-update.yml no encontrado en ${devUpdateConfigPath}. Actualizaciones en dev no funcionarán.`
+      );
+    }
+  }
+
+  // Configurar el feed URL explícitamente para GitHub
+  // electron-updater debería detectar esto automáticamente desde los metadatos
+  // del build si se usó --publish, pero lo configuramos explícitamente como fallback
+  try {
+    // En electron-updater v6.x, usamos setFeedURL con la configuración de GitHub
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (autoUpdater as any).setFeedURL({
+      provider: 'github',
+      owner: 'diegolopezsm',
+      repo: 'merify',
     });
-    if (choice === 0) {
-      autoUpdater.downloadUpdate();
+    updaterLog.info('Feed URL configurado explícitamente para GitHub');
+  } catch (err) {
+    updaterLog.warn(
+      `No se pudo configurar setFeedURL, usando configuración por defecto: ${err}`
+    );
+    // Si setFeedURL falla, electron-updater debería usar la configuración del build
+  }
+
+  updaterLog.info('AutoUpdater configurado');
+  updaterLog.info(`Versión actual: ${app.getVersion()}`);
+  updaterLog.info(`Logs guardados en: ${log.transports.file.getFile().path}`);
+
+  // Evento: Iniciando búsqueda de actualizaciones
+  autoUpdater.on('checking-for-update', () => {
+    updaterLog.info('Verificando actualizaciones...');
+  });
+
+  // Evento: Actualización disponible
+  autoUpdater.on('update-available', info => {
+    updaterLog.info(`Actualización disponible: ${info.version}`);
+    updaterLog.debug(`Detalles: ${JSON.stringify(info, null, 2)}`);
+
+    // La descarga comenzará automáticamente gracias a autoDownload = true
+    // Mostrar notificación opcional (no bloqueante) al usuario
+    dialog
+      .showMessageBox(win, {
+        type: 'info',
+        buttons: ['OK'],
+        title: 'Actualización disponible',
+        message: `Nueva versión disponible (${info.version})`,
+        detail:
+          'La actualización se descargará en segundo plano. Te notificaremos cuando esté lista.',
+        defaultId: 0,
+      })
+      .catch(() => {
+        // Ignorar errores si la ventana ya está cerrada
+      });
+
+    updaterLog.info('Descarga automática iniciada');
+  });
+
+  // Evento: No hay actualizaciones disponibles
+  autoUpdater.on('update-not-available', info => {
+    updaterLog.info('No hay actualizaciones disponibles');
+    updaterLog.debug(`Info: ${JSON.stringify(info, null, 2)}`);
+  });
+
+  // Evento: Error
+  autoUpdater.on('error', err => {
+    updaterLog.error('Error en el autoUpdater', err);
+
+    // Mostrar diálogo de error al usuario solo en producción
+    if (!isDev()) {
+      dialog.showMessageBoxSync(win, {
+        type: 'error',
+        title: 'Update Error',
+        message: 'Failed to check for updates',
+        detail: err.message,
+      });
     }
   });
 
-  autoUpdater.on('error', err => {
-    console.error('Error en el autoUpdater:', err);
-  });
-
+  // Evento: Progreso de descarga
   autoUpdater.on('download-progress', progressObj => {
-    // const percent = progressObj.percent.toFixed(1);
+    const percent = progressObj.percent.toFixed(1);
+    updaterLog.info(`Descargando... ${percent}%`);
     win.setProgressBar(progressObj.percent / 100);
-    // console.log(`Descargando... ${percent}%`);
   });
 
-  autoUpdater.on('update-downloaded', () => {
+  // Evento: Actualización descargada
+  autoUpdater.on('update-downloaded', info => {
+    updaterLog.info(
+      `Actualización descargada: ${JSON.stringify(info, null, 2)}`
+    );
+
+    // Mostrar diálogo con opción de instalar ahora o más tarde
+    // Si el usuario elige "Más tarde", se instalará automáticamente al cerrar la app
     const choice = dialog.showMessageBoxSync(win, {
-      type: 'question',
-      buttons: ['Install and restart', 'Later'],
-      title: 'Update Merify',
-      message: 'The update is ready. Do you want to restart to install it?',
+      type: 'info',
+      buttons: ['Install and restart now'],
+      title: 'Actualización lista',
+      message: 'La actualización está lista para instalar',
+      detail: `Versión ${info.version} descargada. Puedes instalar ahora.`,
+      defaultId: 0, // "Install now" por defecto
     });
+
     if (choice === 0) {
-      autoUpdater.quitAndInstall();
+      updaterLog.info('Usuario eligió instalar ahora - Reiniciando...');
+      // Instalar inmediatamente
+      autoUpdater.quitAndInstall(false, true);
     } else {
+      updaterLog.info(
+        'Usuario eligió instalar al cerrar - Se instalará automáticamente al salir'
+      );
+      // Se instalará automáticamente gracias a autoInstallOnAppQuit = true
       win.setProgressBar(-1);
     }
   });
 
+  // Iniciar verificación de actualizaciones después de 5 segundos
   setTimeout(() => {
-    autoUpdater.checkForUpdates();
+    updaterLog.info('Iniciando verificación de actualizaciones...');
+    autoUpdater.checkForUpdates().catch(err => {
+      updaterLog.error('Error al verificar actualizaciones', err);
+    });
   }, 1000 * 5);
 }
