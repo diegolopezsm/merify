@@ -3,7 +3,7 @@
   "description": "Merify is a tool that helps you manage important notifications.",
   "author": "Diego Lopez",
   "private": true,
-  "version": "0.9.0",
+  "version": "0.9.1",
   "type": "module",
   "main": "dist/electron/main.js",
   "scripts": {
@@ -21,7 +21,7 @@
     "build:mac:both": "npm run transpile:electron && npm run build && electron-builder --mac --arm64 --x64",
     "build:win": "npm run transpile:electron && npm run build && electron-builder --win --x64",
     "build:linux": "npm run transpile:electron && npm run build && electron-builder --linux --x64",
-    "release": "npm run clean && npm run transpile:electron && npm run build && cross-env $(cat .env | xargs) electron-builder --mac --arm64 --x64 --publish always",
+    "release": "npm run clean && npm run transpile:electron && npm run build && cross-env $(cat .env.production | xargs) electron-builder --mac --arm64 --x64 --publish always",
     "change-add": "npx @changesets/cli",
     "change-apply": "npx @changesets/cli version",
     "lint": "eslint . --ext .vue,.js,.ts,.jsx,.tsx",

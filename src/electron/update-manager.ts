@@ -49,5 +49,5 @@ export function setupAutoUpdater(win: BrowserWindow) {
 
   setTimeout(() => {
     autoUpdater.checkForUpdates();
-  }, 3000);
+  }, 1000 * 5);
 }

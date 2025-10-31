@@ -9,9 +9,12 @@ import {
   GOOGLE_ON_GMAIL_EVENT_ERROR,
 } from '../../../shared/constants/electron-api-events.js';
 import { setInboxWatch } from './set-inbox-watch.js';
+import { initEnv } from '../../util.js';
 
 let subscription: Subscription | null = null;
 let lastProcessedHistoryId: string | null = null;
+
+initEnv();
 
 export const initGmailEventsSubscription = async (window: BrowserWindow) => {
   try {
@@ -23,9 +26,13 @@ export const initGmailEventsSubscription = async (window: BrowserWindow) => {
     const historyId = response.historyId ?? null;
     lastProcessedHistoryId = historyId;
   } catch (error) {
-    throw new Error('Error al iniciar la suscripción de Gmail', {
-      cause: error,
-    });
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    throw new Error(
+      `Error al iniciar la suscripción de Gmail: ${errorMessage}`,
+      {
+        cause: error,
+      }
+    );
   }
 };
 
@@ -44,7 +51,9 @@ async function addGmailSubscription(window: BrowserWindow) {
       authClient: oauth2Client,
     });
 
-    subscription = pubsub.subscription('merify-gmail-updates-sub');
+    subscription = pubsub.subscription(
+      process.env.GMAIL_EVENTS_SUBSCRIPTION as string
+    );
 
     subscription.on('message', async message => {
       console.log(`new message received: ${message.id}`);
