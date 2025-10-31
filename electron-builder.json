@@ -2,6 +2,7 @@
     "appId": "com.merify.app",
     "productName": "Merify",
     "icon": "merify-logo.png",
+    "asar": true,
     "files": [
       "dist",
       "dist-ui",
@@ -20,7 +21,10 @@
         "zip"
       ],
       "category": "public.app-category.productivity",
-      "artifactName": "${productName}-${version}-mac-${arch}.${ext}"
+      "artifactName": "${productName}-${version}-mac-${arch}.${ext}",
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false,
+      "identity": null
     },
     "win": {
       "target": [
